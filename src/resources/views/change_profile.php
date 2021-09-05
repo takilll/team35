@@ -90,10 +90,9 @@
 <body class="signup text-center">
     <main class="form-signup">
         <div class="image">
-          <img src="../team35/src/resources/views/dist/img/hobbys2.png" class="logo-img" alt="User Image">
+          <img src="\team35\src\resources\views\img\hobbys2.png" class="logo-img" alt="User Image">
         </div>
         <form action="sign-up.php" method="post">
-            <img src="logo4_2.png" alt="" class="logo-white">
             <h1>ユーザー情報を変更する</h1>
             <input type="text" class="form-control" name="nickname" placeholder="ニックネーム" maxlength="50" required autofocus>
             <input type="email" class="form-control" name="email" placeholder="メールアドレス" maxlength="50" required>

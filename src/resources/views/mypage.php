@@ -136,7 +136,7 @@
         <h1>MY投稿一覧</h1>
         <div class="main_content">
             <div class="my-icon">
-                <img src="../team35/src/resources/views/img/kanna.png" alt="">
+                <img src="\team35\src\resources\views\img/kanna.png" alt="">
             </div>
             <div class="hobby_content">
                 <h3 class="title">写真撮影を一緒に楽しもう！</h3>
@@ -150,13 +150,13 @@
                         <div class="like_hobby">
                             <div class="">参加したいね！</div>
                             <div class="like">
-                                <img src="../team35/src/resources/views/img/icon-heart-twitterblue.svg" alt="">
+                                <img src="\team35\src\resources\views\img\icon-heart-twitterblue.svg" alt="">
                             </div>
                             <div class="like-count">101462475</div> 
                         </div>
                     </div>
                     <div class="hobby_picture">
-                        <img src="../team35/src/resources/views/img/hobby_picture.jfif" alt="">
+                        <img src="\team35\src\resources\views\img\hobby_picture.jfif" alt="">
                     </div>
                 </div>
                 <div class="edit_button">
@@ -172,7 +172,7 @@
         </div>
         <div class="main_content">
             <div class="my-icon">
-                <img src="../team35/src/resources/views/img/kanna.png" alt="">
+                <img src="\team35\src\resources\views\img\kanna.png" alt="">
             </div>
             <div class="hobby_content">
                 <h3 class="title">一緒に格闘技をしよう！</h3>
@@ -186,13 +186,13 @@
                         <div class="like_hobby">
                             <div class="">参加したいね！</div>
                             <div class="like">
-                                <img src="../team35/src/resources/views/img/icon-heart-twitterblue.svg" alt="">
+                                <img src="\team35\src\resources\views\img\icon-heart-twitterblue.svg" alt="">
                             </div>
                             <div class="like-count">121328487</div> 
                         </div>
                     </div>
                     <div class="hobby_picture">
-                        <img src="../team35/src/resources/views/img/hobby_picture2.jfif" alt="">
+                        <img src="\team35\src\resources\views\img\hobby_picture2.jfif" alt="">
                     </div>
                 </div>
                 <div class="edit_button">
@@ -208,7 +208,7 @@
         </div>
         <div class="main_content">
             <div class="my-icon">
-                <img src="../team35/src/resources/views/img/kanna.png" alt="">
+                <img src="\team35\src\resources\views\img\kanna.png" alt="">
             </div>
             <div class="hobby_content">
                 <h3 class="title">朝活を一緒に楽しもう！</h3>
@@ -222,13 +222,13 @@
                         <div class="like_hobby">
                             <div class="">参加したいね！</div>
                             <div class="like">
-                                <img src="../team35/src/resources/views/img/icon-heart-twitterblue.svg" alt="">
+                                <img src="\team35\src\resources\views\img\icon-heart-twitterblue.svg" alt="">
                             </div>
                             <div class="like-count">61566485</div> 
                         </div>
                     </div>
                     <div class="hobby_picture">
-                        <img src="../team35/src/resources/views/img/hobby_picture3.jfif" alt="">
+                        <img src="\team35\src\resources\views\img\hobby_picture3.jfif" alt="">
                     </div>
                 </div>
                 <div class="edit_button">

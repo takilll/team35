@@ -8,7 +8,7 @@
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
               <div class="image">
-                <img src="../team35/src/resources/views/img/hobbys2.png" class="img-circle elevation-2" alt="User Image">
+                <img src="\team35\src\resources\views\img\hobbys2.png" class="img-circle elevation-2" alt="User Image">
               </div>
             </div>
             <!-- Sidebar Menu -->
