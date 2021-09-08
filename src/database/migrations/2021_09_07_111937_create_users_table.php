@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->integer('birth_month');
             $table->integer('birth_day');
             $table->string('password', 128);
-            $table->string('image')->nullable();
+            $table->string('profile_img_path')->nullable();
             $table->timestamps();
         });
     }
