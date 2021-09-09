@@ -17,23 +17,16 @@ class HobbyController extends Controller
     public function update(Request $request)
     {
         $user = User::find($request->id);
-        $user->name = $request->name;
-        $user->phone = $request->phone;
-        $user->email = $request->email;
+        $user->nickname = $request->nickname;
+        $user->mail = $request->mail;
+        $user->birth_year = $request->birth_year;
+        $user->birth_month = $request->birth_month;
+        $user->birth_day = $request->birth_day;
+        $user->password = $request->password;
+        $user->profile_img_path = $request->profile_img_path;
         $user->save();
         return redirect('/user/index');
     }
 
-    public function delete(Request $request)
-    {
-        $user = User::find($request->id);
-        return view('user.delete', ['user' => $user]);
-    }
-
-    public function remove(Request $request)
-    {
-        $user = User::find($request->id);
-        $user->delete();
-        return redirect('/user/index');
-    }
+   
 }

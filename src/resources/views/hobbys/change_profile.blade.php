@@ -89,13 +89,13 @@
 </head>
 <body class="signup text-center">
     <main class="form-signup">
-        <form action="sign-up.php" method="post">
+        <form action="{{ route('user_update', ['id'=> $user->id]) }}" method="post">
             <img src="logo4_2.png" alt="" class="logo-white">
             <h1>ユーザー情報を変更する</h1>
-            <input type="text" class="form-control" name="nickname" placeholder="ニックネーム" maxlength="50" required autofocus>
-            <input type="email" class="form-control" name="email" placeholder="メールアドレス" maxlength="50" required>
+            <input type="text" class="form-control" name="nickname" placeholder="ニックネーム" value="{{ $user->nickname }}" maxlength="50" required autofocus>
+            <input type="email" class="form-control" name="email" placeholder="メールアドレス" value="{{ $user->mail }}" maxlength="50" required>
             <div class="birth-area">    
-                <p>生年月日：</p>
+                <p>生年月日：{{ $user->birth_year }}年{{ $user->birth_month }}月{{ $user->birth_day }}日</p>
             </div>
             <p class="text mt-2 mb-3 text-muted">※ パスワードは8-16文字に設定してください。</p>
             <input type="password" class="form-control" name="password" placeholder="現在のパスワード" minlength="8" maxlength="16" required>
