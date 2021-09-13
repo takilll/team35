@@ -45,13 +45,13 @@
     
     .signup input {
         margin-bottom: 10px;
-        background-color: #fcbe14;
+        background-color: #fff;
         border-color: #1E48B1;
         color: #fff;
     }
     
     .signup input:focus {
-        background-color: #fcbe14;
+        background-color: #fff;
         border-color: #1af;
         color: #fff;
     }
