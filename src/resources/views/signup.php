@@ -45,13 +45,13 @@
     
     .signup input {
         margin-bottom: 10px;
-        background-color: #fcbe14;
+        background-color: #fff;
         border-color: #1E48B1;
         color: #fff;
     }
     
     .signup input:focus {
-        background-color: #fcbe14;
+        background-color: #fff;
         border-color: #1af;
         color: #fff;
     }
@@ -79,6 +79,7 @@
         color: #fff;
         font-size: 15px;
     }
+
     </style>
 
 </head>
@@ -275,6 +276,7 @@
             <div class="mb-0 select">
                 <input type="file" name="image" class="form-control form-control-sm">
             </div>
+            <p class="text mt-2 mb-3 text-muted">※ プロフィール画像を選択してください。</p>
             <button class="w-100 btn btn-lg" type="submit">登録する</button>
             <p class="mt-3 mb-2"><a href="sign-in.php">ログインする</a></p>
             <p class="mt-2 mb-3 text-muted">&copy; 2021</p>
