@@ -101,7 +101,7 @@
             <input type="password" class="form-control" name="password" placeholder="現在のパスワード" minlength="8" maxlength="16" required>
             <input type="password" class="form-control" name="password" placeholder="新しいパスワード" minlength="8" maxlength="16" required>
             <input type="password" class="form-control" name="password" placeholder="新しいパスワード(再入力)" minlength="8" maxlength="16" required>
-            <div class="mb-0 select">
+            <div class="mb-0 select">※ プロフィール画像を選択してください。
                 <input type="file" name="image" class="form-control form-control-sm">
             </div>
             <button class="w-100 btn btn-lg" type="submit">変更する</button>

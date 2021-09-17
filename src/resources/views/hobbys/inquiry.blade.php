@@ -76,10 +76,12 @@
     <h1>趣味への問い合わせ</h1>
     <form method="post" action="post" class="">
         <p>件名</p>
+        {{ $inputs['title'] }}
         <input type="text" class="" minlength="10" maxlength="50" required>
-        <p>ニックネーム：</p>
-        <p>メールアドレス：</p>
+        <p>ニックネーム：{{ $value['nickname'] }}</p>
+        <p>メールアドレス：{{ $value['mail'] }}</p>
         <p>問い合わせ内容</p>
+        {!! nl2br(e($inputs['body'])) !!}
         <textarea id="message" name="message" minlength="10" maxlength="50" required></textarea>
     </form>
     <form action="">
