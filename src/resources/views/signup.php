@@ -57,6 +57,7 @@
     }
 
     .text {
+        top: -4px;
         text-align: left;
         font-size: 12px;
     }
@@ -272,7 +273,7 @@
             </div>
             <p class="text mt-2 mb-3 text-muted">※ 生年月日は登録後の変更ができません。</p>
             <input type="password" class="form-control" name="password" placeholder="パスワード" minlength="8" maxlength="16" required>
-            <p class="text mt-2 mb-3 text-muted">※ パスワードは8-16文字に設定してください。</p>
+            <p class="text mt-2 mb-3 text-muted">※ パスワードは8-16英数字(a-z,A-Z,0-9)で設定してください。</p>
             <div class="mb-0 select">
                 <input type="file" name="image" class="form-control form-control-sm">
             </div>
