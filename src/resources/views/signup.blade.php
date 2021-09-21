@@ -47,13 +47,11 @@
         margin-bottom: 10px;
         background-color: #fff;
         border-color: #1E48B1;
-        color: #fff;
     }
     
     .signup input:focus {
         background-color: #fff;
         border-color: #1af;
-        color: #fff;
     }
 
     .text {
@@ -86,13 +84,14 @@
 </head>
 <body class="signup text-center">
     <main class="form-signup">
-        <form action="sign-up.php" method="post">
+        <form action="{{url('signup/post')}}" method="post">
+            @csrf
             <img src="logo4_2.png" alt="" class="logo-white">
             <h1>アカウントの作成</h1>
             <input type="text" class="form-control" name="nickname" placeholder="ニックネーム" maxlength="50" required autofocus>
-            <input type="email" class="form-control" name="email" placeholder="メールアドレス" maxlength="50" required>
+            <input type="email" class="form-control" name="mail" placeholder="メールアドレス" maxlength="50" required>
             <div class="birth-area">    
-                <select name="year" class="birth">
+                <select name="birth_year" class="birth">
                 <option value="">年</option>
                 <option value="1900">1900</option>
                 <option value="1901">1901</option>
@@ -221,7 +220,7 @@
                 <option value="2024">2024</option>
                 <option value="2025">2025</option>
                 </select>
-                <select name="month" class="birth">
+                <select name="birth_month" class="birth">
                 <option value="">月</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -236,7 +235,7 @@
                 <option value="11">11</option>
                 <option value="12">12</option>
                 </select>
-                <select name="day" class="birth">
+                <select name="birth_day" class="birth">
                 <option value="">日</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -275,11 +274,11 @@
             <input type="password" class="form-control" name="password" placeholder="パスワード" minlength="8" maxlength="16" required>
             <p class="text mt-2 mb-3 text-muted">※ パスワードは8-16英数字(a-z,A-Z,0-9)で設定してください。</p>
             <div class="mb-0 select">
-                <input type="file" name="image" class="form-control form-control-sm">
+                <input type="file" name="profile_img_path" class="form-control form-control-sm">
             </div>
             <p class="text mt-2 mb-3 text-muted">※ プロフィール画像を選択してください。</p>
             <button class="w-100 btn btn-lg" type="submit">登録する</button>
-            <p class="mt-3 mb-2"><a href="sign-in.php">ログインする</a></p>
+            <p class="mt-3 mb-2"><a href="login">ログインする</a></p>
             <p class="mt-2 mb-3 text-muted">&copy; 2021</p>
         </form>
     </main>

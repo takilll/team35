@@ -11,6 +11,8 @@ use Session;
 use Form;
 
 
+use Illuminate\Support\Facades\Hash;
+
 class HobbyController extends Controller
 {
     // 一覧ページ
@@ -92,5 +94,40 @@ class HobbyController extends Controller
         return redirect('/user/index');
     }
 
+    public function login()
+    {
+        return view('login');
+    }
+    public function post(Request $req)
+    {
+        $table = new hobby;
+        $user = $table->getUser($req->mail);
+        //dd($user);
+        if (Hash::check($req->password, $user[0]->password)) {
+            return redirect('hobbys_list');
+        } else {
+            return view('login', ['errorMsg' => 'ログインできませんでした']);
+        }
+    }
+
+    public function getRegister()
+    {
+        return view('signup');
+    }
+    public function postRegister(Request $request)
+    {
+        // ユーザ登録処理
+        $user = new hobby; //hobby() hobby.phpの中の$fillable に項目追加？
+        $user->nickname = $request->nickname;
+        $user->mail = $request->mail;
+        $user->birth_year = $request->birth_year;
+        $user->birth_month = $request->birth_month;
+        $user->birth_day = $request->birth_day;
+        $user->password = Hash::make($request->password);
+        $user->profile_img_path = $request->profile_img_path;
+        $user->save();
+        return redirect('login');
+    }
+    
    
 }

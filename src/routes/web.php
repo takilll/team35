@@ -18,7 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+//Auth::routes();
 
 // 投稿一覧ページ
 Route::any('/index',        [HobbyController::class, 'list'])->name('hobby.list');
@@ -32,3 +32,11 @@ Route::get('/user/edit/{id}', [App\Http\Controllers\HobbyController::class, 'edi
 Route::post('/user/edit/{id}', [App\Http\Controllers\HobbyController::class, 'update'])->name('user_update');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/login', [App\Http\Controllers\HobbyController::class, 'login'])->name('login');
+Route::post('/login/post', [App\Http\Controllers\HobbyController::class, 'post']);
+Route::get('/signup', [App\Http\Controllers\HobbyController::class, 'getRegister']);
+Route::post('/signup/post', [App\Http\Controllers\HobbyController::class, 'postRegister']);
+
+
+
