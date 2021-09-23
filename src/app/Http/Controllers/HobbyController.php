@@ -104,7 +104,7 @@ class HobbyController extends Controller
         $user = $table->getUser($req->mail);
         //dd($user);
         if (Hash::check($req->password, $user[0]->password)) {
-            return redirect('hobbys_list');
+            return redirect('/index');
         } else {
             return view('login', ['errorMsg' => 'ログインできませんでした']);
         }
