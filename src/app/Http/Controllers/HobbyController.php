@@ -106,16 +106,8 @@ class HobbyController extends Controller
         $table = new hobby;
         $user = $table->getUser($req->mail);
         if (Hash::check($req->password, $user[0]->password)) {
-            // セッションを開始していない場合
-            if (session_status() === PHP_SESSION_NONE) {
-                // セッション開始
-                session_start();
-            }
-            // ユーザー情報とIDをセッションに保存
-            $_SESSION['USER'] = $user[0];
-            $_SESSION['ID'] = $user[0]->id;
-            // ログイン
-            return redirect('index');
+            Session::put('user',$user);
+            return redirect('/index');
         } else {
             //ログイン失敗
             return view('login', ['errorMsg' => 'ログインできませんでした']);
