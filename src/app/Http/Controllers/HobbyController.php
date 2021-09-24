@@ -95,7 +95,8 @@ class HobbyController extends Controller
     }
 
     public function login()
-    {
+    {   
+        // ログイン画面へ遷移
         return view('login');
     }
     public function post(Request $req)
@@ -104,15 +105,25 @@ class HobbyController extends Controller
         $user = $table->getUser($req->mail);
         //dd($user);
         if (Hash::check($req->password, $user[0]->password)) {
-            
+            // セッションを開始していない場合
+            if (session_status() === PHP_SESSION_NONE) {
+                // セッション開始
+                session_start();
+            }
+            // ユーザー情報とIDをセッションに保存
+            $_SESSION['USER'] = $user[0];
+            $_SESSION['ID'] = $user[0]->id;
+            // ログイン
             return redirect('index');
         } else {
+            //ログイン失敗
             return view('login', ['errorMsg' => 'ログインできませんでした']);
         }
     }
 
     public function getRegister()
-    {
+    {   
+        // ユーザ登録画面へ遷移
         return view('signup');
     }
     public function postRegister(Request $request)

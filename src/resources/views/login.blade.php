@@ -87,12 +87,14 @@
             @csrf
             <img src="logo4_2.png" alt="" class="logo-white">
             <h1>ログインする</h1>
+            @isset($errorMsg)
+            {{ $errorMsg }}
+            <br>
+            <br>
+            @endisset
             <input type="email" class="form-control" name="mail" placeholder="メールアドレス" maxlength="50" required autofocus>
             <input type="password" class="form-control" name="password" placeholder="パスワード" minlength="8" maxlength="16" required>
             <button class="w-100 btn btn-lg" type="submit">ログイン</button>
-            @isset($errorMsg)
-            {{ $errorMsg }}
-            @endisset
             <p class="mt-3 mb-2"><a href="../signup">会員登録する</a></p>
             <p class="mt-2 mb-3 text-muted">&copy; 2021</p>
         </form>
