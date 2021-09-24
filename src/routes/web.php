@@ -37,8 +37,10 @@ Route::post('/user/edit/{id}', [App\Http\Controllers\HobbyController::class, 'up
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+// ログイン
 Route::get('/login', [App\Http\Controllers\HobbyController::class, 'login'])->name('login');
 Route::post('/login/post', [App\Http\Controllers\HobbyController::class, 'post']);
+//会員登録
 Route::get('/signup', [App\Http\Controllers\HobbyController::class, 'getRegister']);
 Route::post('/signup/post', [App\Http\Controllers\HobbyController::class, 'postRegister']);
 
