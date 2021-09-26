@@ -103,7 +103,6 @@ class HobbyController extends Controller
     {
         $table = new hobby;
         $user = $table->getUser($req->mail);
-        //dd($user);
         if (Hash::check($req->password, $user[0]->password)) {
             // セッションを開始していない場合
             if (session_status() === PHP_SESSION_NONE) {
@@ -129,14 +128,27 @@ class HobbyController extends Controller
     public function postRegister(Request $request)
     {
         // ユーザ登録処理
-        $user = new hobby; //hobby() hobby.phpの中の$fillable に項目追加？
+        $user = new hobby;
         $user->nickname = $request->nickname;
         $user->mail = $request->mail;
         $user->birth_year = $request->birth_year;
         $user->birth_month = $request->birth_month;
         $user->birth_day = $request->birth_day;
         $user->password = Hash::make($request->password);
-        $user->profile_img_path = $request->profile_img_path;
+
+        if ($request -> profile_img_path != null) {
+            $file = $request->file('profile_img_path');
+            // getClientOriginalName()  拡張子を含め、アップロードしたファイルのファイル名を取得することができる。
+            $image_extension = pathinfo($file -> getClientOriginalName(), PATHINFO_EXTENSION);
+            // file名が重複しないようにmail_time.拡張子に変更。
+            $image_name = $user->mail . '_' . date('YmdHis') . '.' . $image_extension;
+            $user->profile_img_path = $image_name;
+            //public_path() publicディレクトリの完全パスを返す。publicディレクトリ内にuploadsディレクトリを作成。
+            $target_path = public_path('uploads/profile/');
+            $file -> move($target_path, $user->profile_img_path);
+        }else {
+            $user->profile_img_path = "";
+        }
         $user->save();
         return redirect('login');
     }

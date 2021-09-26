@@ -58,6 +58,8 @@
         top: -4px;
         text-align: left;
         font-size: 12px;
+        padding-bottom: 5px;
+        padding-top: -5px;
     }
     
     .birth-area {
@@ -84,7 +86,7 @@
 </head>
 <body class="signup text-center">
     <main class="form-signup">
-        <form action="{{url('signup/post')}}" method="post">
+        <form action="{{url('signup/post')}}" method="post" enctype="multipart/form-data">
             @csrf
             <img src="logo4_2.png" alt="" class="logo-white">
             <h1>アカウントの作成</h1>
@@ -269,14 +271,14 @@
                 <option value="30">30</option>
                 <option value="31">31</option>
                 </select>
+            <br><p class="text mt-2 mb-3 text-muted">※ 生年月日は登録後の変更ができません。</p>
             </div>
-            <p class="text mt-2 mb-3 text-muted">※ 生年月日は登録後の変更ができません。</p>
             <input type="password" class="form-control" name="password" placeholder="パスワード" minlength="8" maxlength="16" required>
             <p class="text mt-2 mb-3 text-muted">※ パスワードは8-16英数字(a-z,A-Z,0-9)で設定してください。</p>
-            <div class="mb-0 select">
+            <!--- <div class="mb-0 select"> --->
                 <input type="file" name="profile_img_path" class="form-control form-control-sm">
-            </div>
-            <p class="text mt-2 mb-3 text-muted">※ プロフィール画像を選択してください。</p>
+                <p class="text mt-2 mb-3 text-muted">※ プロフィール画像を選択してください。</p>
+            <!--- </div> --->
             <button class="w-100 btn btn-lg" type="submit">登録する</button>
             <p class="mt-3 mb-2"><a href="login">ログインする</a></p>
             <p class="mt-2 mb-3 text-muted">&copy; 2021</p>
