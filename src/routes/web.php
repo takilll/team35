@@ -28,10 +28,10 @@ Route::any('/hobby/regist', [HobbyController::class, 'regist'])->name('hobby.reg
 // 趣味登録処理
 Route::post('/regist',      [HobbyController::class, 'store'])->name('hobby.proc');
 
-// 入力ページ
-Route::get('/contact/{id}', [App\Http\Controllers\CHobbyController::class, 'contact'])->name('user_contact');
-Route::post('/contact/{id}', [App\Http\Controllers\CHobbyController::class, 'send'])->name('user_send');
-// 投稿編集
+// 問い合わせ入力ページ
+Route::get('/contact/{id}', [App\Http\Controllers\HobbyController::class, 'contact'])->name('user_contact');
+Route::post('/contact/{id}', [App\Http\Controllers\HobbyController::class, 'send'])->name('user_send');
+// ユーザー情報編集
 Route::get('/user/edit/{id}', [App\Http\Controllers\HobbyController::class, 'edit'])->name('user_edit');
 Route::post('/user/edit/{id}', [App\Http\Controllers\HobbyController::class, 'update'])->name('user_update');
 
@@ -44,5 +44,8 @@ Route::post('/login/post', [App\Http\Controllers\HobbyController::class, 'post']
 Route::get('/signup', [App\Http\Controllers\HobbyController::class, 'getRegister']);
 Route::post('/signup/post', [App\Http\Controllers\HobbyController::class, 'postRegister']);
 
+// ユーザーマイページ
+Route::get('/user/mypage/{id}', [App\Http\Controllers\HobbyController::class, 'mypage'])->name('user_mypage');
+// Route::post('/user/mypage/{id}', [App\Http\Controllers\HobbyController::class, 'update'])->name('user_update');
 
 

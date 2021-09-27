@@ -9,7 +9,7 @@ use App\Models\Post;
 use DB;
 use Session;
 use Form;
-
+use App\Models\User;
 
 use Illuminate\Support\Facades\Hash;
 
@@ -17,7 +17,9 @@ class HobbyController extends Controller
 {
     // 一覧ページ
     public function list(Request $request){
-        return view('hobbys.hobbys_list');
+        // $user = User::find($request->id)->first();
+        $user = User::find('1')->first();
+        return view('hobbys.hobbys_list', ['user' => $user]);
     }
 
     // 趣味投稿ページ
@@ -77,21 +79,21 @@ class HobbyController extends Controller
     public function edit(Request $request)
     {
         $user = User::find($request->id);
-        return view('user.edit', ['user' => $user]);
+        return view('hobbys.profile_edit', ['user' => $user]);
     }
 
     public function update(Request $request)
     {
         $user = User::find($request->id);
+        if (Hash::needsRehash($user)) {
+            $hashed = Hash::make('password');
+        }
         $user->nickname = $request->nickname;
         $user->mail = $request->mail;
-        $user->birth_year = $request->birth_year;
-        $user->birth_month = $request->birth_month;
-        $user->birth_day = $request->birth_day;
-        $user->password = $request->password;
+        $user->password = Hash::make($request->password);
         $user->profile_img_path = $request->profile_img_path;
         $user->save();
-        return redirect('/user/index');
+        return redirect('index');
     }
 
     public function login()
@@ -191,6 +193,17 @@ class HobbyController extends Controller
             return view('contact.thanks');
             
         }
+    }
+
+    public function mypage(Request $request)
+    {
+        $nullitem = [ '' => '選択して下さい' ];
+        //フォームの構築
+        $form = [
+            'category'   => Form::select('category', $nullitem + __('define.category'), '',["class"=>"", "id"=>"category"] ),
+            'prefecture' => Form::select('prefecture', $nullitem + __('define.prefecture'), '',["class"=>"", "id"=>"prefecture"] ),
+        ];
+        return view('hobbys.regist')->with('form',$form);
     }
     
    

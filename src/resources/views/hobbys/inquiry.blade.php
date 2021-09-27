@@ -71,7 +71,7 @@
     </style>
 </head>
 <body>
-<?php include('sidebar.php'); ?>
+@include('sidebar.php');
     <div class="content_wrapper">
     <h1>趣味への問い合わせ</h1>
     <form method="post" action="post" class="">
