@@ -60,10 +60,14 @@ class HobbyController extends Controller
 
         // ログインしているuser_idの取得
         // $user = auth::user()->id;
+        $user = Session::get('user');
+        // var_dump($user);
+        // die;
+
 
         $post = new Post;
         // ログインしているuser_idを何処で拾うか
-        // $post->user_id     = $user;
+        $post->user_id        = $user[0]->id;
         $post->category       = $request->category;
         $post->title          = $request->title;
         $post->text           = $request->text;
@@ -73,7 +77,7 @@ class HobbyController extends Controller
         $post->save();
 
         // $message = "新規登録が完了しました。";
-        return redirect()->route('index');
+        return redirect()->route('hobby.list');
     }
 
     public function edit(Request $request)
@@ -106,8 +110,10 @@ class HobbyController extends Controller
         $table = new hobby;
         $user = $table->getUser($req->mail);
         if (Hash::check($req->password, $user[0]->password)) {
-            Session::put('user',$user);
-            return redirect('/index');
+            // kimoto修正
+            Session::put('user', $user);
+            // ログイン
+            return redirect('index');
         } else {
             //ログイン失敗
             return view('login', ['errorMsg' => 'ログインできませんでした']);
