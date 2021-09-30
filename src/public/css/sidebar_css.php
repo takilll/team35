@@ -7,7 +7,7 @@
 <!-- Tempusdominus Bootstrap 4 -->
 <link rel="stylesheet" href="\team35\src\resources\views\plugins\tempusdominus-bootstrap-4\css\tempusdominus-bootstrap-4.min.css">
 <!-- iCheck -->
-<link rel="stylesheet" href="\team35\src\resources\views\plugins\icheck-bootstrap\icheck-bootstrap.min.css">
+<link rel="stylesheet" href="{{ asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
 <!-- JQVMap -->
 <link rel="stylesheet" href="\team35\src\resources\views\plugins\jqvmap\jqvmap.min.css">
 <!-- Theme style -->

@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-{{-- <?php include('hobbys.sidebar_css'); ?> --}}
+<link rel="stylesheet" href="/css/sidebar_css.css">
+@include('hobbys.sidebar_css')
 <style>
     
     /* これも無いとだめ */
