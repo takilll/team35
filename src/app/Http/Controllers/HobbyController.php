@@ -17,6 +17,12 @@ class HobbyController extends Controller
 {
     // 一覧ページ
     public function list(Request $request){
+
+        //瀧川追加:ログインしていなければログイン画面へ戻る
+        if(!Session::has('user')){
+            return redirect('login');
+        }
+
         //データベースのデータ取得
         $db = DB::table('posts');
         //Userテーブルのサブクエリ usersテーブルのid名が被るから idをu_idにリネーム
@@ -142,6 +148,13 @@ class HobbyController extends Controller
             return view('login', ['errorMsg' => 'ログインできませんでした']);
         }
     }
+    public function logout(Session $session)
+    {
+        //ユーザーセッションの消去
+        Session::forget('user');
+        // ログイン画面に戻る
+        return redirect('login');
+    }
 
     public function getRegister()
     {   
@@ -226,6 +239,6 @@ class HobbyController extends Controller
         ];
         return view('hobbys.regist')->with('form',$form);
     }
-    
+
    
 }

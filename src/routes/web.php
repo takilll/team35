@@ -43,6 +43,8 @@ Route::post('/login/post', [App\Http\Controllers\HobbyController::class, 'post']
 //会員登録
 Route::get('/signup', [App\Http\Controllers\HobbyController::class, 'getRegister']);
 Route::post('/signup/post', [App\Http\Controllers\HobbyController::class, 'postRegister']);
+// ログアウト
+Route::get('/logout', [App\Http\Controllers\HobbyController::class, 'logout'])->name('logout');
 
 // ユーザーマイページ
 Route::get('/user/mypage/{id}', [App\Http\Controllers\HobbyController::class, 'mypage'])->name('user_mypage');
