@@ -17,20 +17,43 @@ class HobbyController extends Controller
 {
     // 一覧ページ
     public function list(Request $request){
-        // $user = User::find($request->id)->first();
-        $user = User::find('1')->first();
-        return view('hobbys.hobbys_list', ['user' => $user]);
+        //データベースのデータ取得
+        $db = DB::table('posts');
+        //Userテーブルのサブクエリ usersテーブルのid名が被るから idをu_idにリネーム
+        $u = DB::table('users')->select( DB::raw( 'id as u_id'), 'nickname','profile_img_path');
+        //leftjoinで$dbに$uを結合
+        $db->leftjoin( DB::raw( '( '.$u->toSql().' ) as users'), function($join){
+            // left join の on句
+            $join->whereRaw( 'user_id = u_id ' );
+                });
+        $hobbys = $db->get();
+
+        $user = Session::get('user');
+
+        $user = User::where( 'id', $user[0]->id )->first();
+
+        $def['prefecture']  = __('define.prefecture');
+        $view = view('hobbys.hobbys_list');
+        $view->with( 'user', $user);
+        $view->with( 'hobbys', $hobbys);
+        $view->with( 'def', $def);
+        return $view;
     }
 
     // 趣味投稿ページ
     public function regist(Request $request){
+        $user = Session::get('user');
+        $user = User::where( 'id', $user[0]->id )->first();
         $nullitem = [ '' => '選択して下さい' ];
         //フォームの構築
         $form = [
             'category'   => Form::select('category', $nullitem + __('define.category'), '',["class"=>"", "id"=>"category"] ),
             'prefecture' => Form::select('prefecture', $nullitem + __('define.prefecture'), '',["class"=>"", "id"=>"prefecture"] ),
         ];
-        return view('hobbys.regist')->with('form',$form);
+        $view = view('hobbys.regist');
+        $view->with( 'form', $form);
+        $view->with( 'user', $user);
+        return $view;
     }
 
     // 趣味投稿処理

@@ -225,110 +225,46 @@
         </div>
 
         <div class="hobby__list">
-            <div class="hobby__item">
-                <div class="user">
-                    <div class="user__frame">
-                        <img src="https://picsum.photos/200" alt="">
-                    </div>
-                </div>
-
-                <div class="content">
-                    <h3 class="content__title">プログラミングを勉強しよう！</h1>
-                        <div class="content__item">
-                            <div class="content__detail">
-                                <p>ニックネーム</p>
-                                <p>場所</p>
-                                <p>投稿日時</p>
-                                <p>参加したいね</p>
-                                <!-- 自分がいいねしたもののみ表示する -->
-                                <button class="contact__button">問い合わせ</button>
-                            </div>
-                            <div class="hobby__img">
-                                <!-- ここの写真サイズをどうすれば良いか？ -->
-                                <div class="hobby_img_frame">
-                                    <img src="https://picsum.photos/1000/1000" alt="">
-                                </div>
-
-                            </div>
-                            <!-- width 100% display flexwrapで折り返しにする -->
-                            <div class="content__text">
-                                <p>
-                                この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字
-                                </p>
-                            </div>
+            @foreach ($hobbys as $hobby)
+                <div class="hobby__item">
+                    <div class="user">
+                        <div class="user__frame">
+                            @if (!empty($hobby->profile_img_path))
+                                <img src="../../uploads/profile/{{ $hobby->profile_img_path}}">
+                            @else
+                                <img src="../../uploads/profile/icon-profile.svg">
+                            @endif
                         </div>
-                </div>
-            </div>
-            <div class="hobby__item">
-                <div class="user">
-                    <div class="user__frame">
-                        <img src="https://picsum.photos/200" alt="">
                     </div>
-                </div>
-
-                <div class="content">
-                    <h3 class="content__title">プログラミングを勉強しよう！</h1>
-                        <div class="content__item">
-                            <div class="content__detail">
-                                <p>ニックネーム</p>
-                                <p>場所</p>
-                                <p>投稿日時</p>
-                                <p>参加したいね</p>
-                                <!-- 自分がいいねしたもののみ表示する -->
-                                <button class="contact__button">問い合わせ</button>
-                            </div>
-                            <div class="hobby__img">
-                                <!-- ここの写真サイズをどうすれば良いか？ -->
-                                <div class="hobby_img_frame">
-                                    <img src="https://picsum.photos/1000/1000" alt="">
+                    <div class="content">
+                        <h3 class="content__title">{{$hobby->title}}</h1>
+                            <div class="content__item">
+                                <div class="content__detail">
+                                    <p>{{$hobby->nickname}}</p>
+                                    <p>場所 {{$def['prefecture'][$hobby->prefecture]?? __('')}}{{$hobby->municipalities}}</p>
+                                    <p>投稿日時 {{$hobby->created_at}}</p>
+                                    <p>参加したいね</p>
+                                    <!-- 自分がいいねしたもののみ表示する -->
+                                    <button class="contact__button">問い合わせ</button>
                                 </div>
-
+                                <div class="hobby__img">
+                                    <div class="hobby_img_frame">
+                                        @if (!empty($hobby->hobby_img_path))
+                                            <img src="../../uploads/post/{{ $hobby->hobby_img_path }}">
+                                        @else
+                                            <img src="../../uploads/post/no_image_logo.png">
+                                        @endif
+                                    </div>
+                                </div>
+                                <!-- width 100% display flexwrapで折り返しにする -->
+                                <div class="content__text">
+                                    <p>{{$hobby->text}}</p>
+                                </div>
                             </div>
-                            <!-- width 100% display flexwrapで折り返しにする -->
-                            <div class="content__text">
-                                <p>
-                                この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字
-                                </p>
-                            </div>
-                        </div>
-                </div>
-            </div>
-            <div class="hobby__item">
-                <div class="user">
-                    <div class="user__frame">
-                        <img src="https://picsum.photos/200" alt="">
                     </div>
-                </div>
-
-                <div class="content">
-                    <h3 class="content__title">プログラミングを勉強しよう！</h1>
-                        <div class="content__item">
-                            <div class="content__detail">
-                                <p>ニックネーム</p>
-                                <p>場所</p>
-                                <p>投稿日時</p>
-                                <p>参加したいね</p>
-                                <!-- 自分がいいねしたもののみ表示する -->
-                                <button class="contact__button">問い合わせ</button>
-                            </div>
-                            <div class="hobby__img">
-                                <!-- ここの写真サイズをどうすれば良いか？ -->
-                                <div class="hobby_img_frame">
-                                    <img src="https://picsum.photos/1000/1000" alt="">
-                                </div>
-
-                            </div>
-                            <!-- width 100% display flexwrapで折り返しにする -->
-                            <div class="content__text">
-                                <p>
-                                この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字
-                                </p>
-                            </div>
-                        </div>
-                </div>
-            </div>
+                </div>    
+            @endforeach
         </div>
     </div>
-
 </body>
 </html>
