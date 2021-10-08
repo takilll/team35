@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="/css/sidebar_css.css">
+{{-- <link rel="stylesheet" href="/css/sidebar_css.css"> --}}
 @include('hobbys.sidebar_css')
 <style>
     
@@ -191,40 +191,45 @@
     <div class="test2">
         @include('hobbys.sidebar')
     </div>
+
     <div class="content_wrapper">
         <div class="hobby__regist">
-            <a href=""><button>新規登録</button></a>
+            <a href="{{route('hobby.regist')}}"><button>新規登録</button></a>
         </div>
-        <div class="search__area">
-            <table>
-                <tr>
-                    <td>
-                        <select name="" id=""></select>
-                    </td>
-                    <td>
-                        <select name="" id=""></select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <select name="" id=""></select>
-                    </td>
-                    <td>
-                        <input type="text">
-                    </td>
-                </tr>
-                <tr>
-                    <td class="search__btn">
-                        <button name="btnSearch" type="submit" class="btn__search">検 索</button>
-                    </td>
-                    <td class="search__btn">
-                        <button name="btnClearSearch" type="submit" class="btn__clear">クリア</button>
-                    </td>
-                </tr>
-            </table>
-        </div>
+        <form method="post" name="frmSearch" action="">
+            @csrf      
+            <div class="search__area">
+                <table>
+                    <tr>
+                        <td>
+                            {{$form['category']}}
+                        </td>
+                        <td>
+                            {{-- <select name="" id=""></select> --}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {{$form['prefecture']}}
+                        </td>
+                        <td>
+                            {{$form['municipalities']}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="search__btn">
+                            <button name="btnSearch" type="submit" class="btn__search">検 索</button>
+                        </td>
+                        <td class="search__btn">
+                            <button name="btnClearSearch" type="submit" class="btn__clear">クリア</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
 
         <div class="hobby__list">
+            {{$mes}}
             @foreach ($hobbys as $hobby)
                 <div class="hobby__item">
                     <div class="user">
