@@ -17,14 +17,49 @@ class HobbyController extends Controller
 {
     // 一覧ページ
     public function list(Request $request){
-
         //瀧川追加:ログインしていなければログイン画面へ戻る
         if(!Session::has('user')){
             return redirect('login');
         }
-
-        //データベースのデータ取得
+        // 検索処理
+        if( $request->has('btnClearSearch') ){
+            Session::forget('hobby.search.input');
+        }
         $db = DB::table('posts');
+        //btnSearchが押されていれば
+        if( $request->has('btnSearch') ){
+            // 検索条件を$serchに保管する
+            $search =[];
+            $input = $request->input('category');
+            if( $input ){
+                $db->where( 'category', $input );
+                $search['category'] = $input;
+            }
+            $input = $request->input('prefecture');
+            if( $input ){
+                $db->where('prefecture', $input);
+                $search['prefecture'] = $input;
+            }
+            $input = $request->input('municipalities');
+            if( $input ){
+                $db->where('municipalities', 'like', "%{$input}%");
+                $search['municipalities'] = $input;
+            }
+            //検索条件をセッションに保存
+            Session::put('hobby.search.input', $search);
+        } else {
+            //ボタンが押されてない場合は、セッションから検索条件を取得して検索を行う
+            $input = Session::get('hobby.search.input');
+            if( !empty($input['category']) ){
+                $db->where( 'category', $input['category'] );
+            }
+            if( !empty($input['prefecture']) ){
+                $db->where('prefecture', $input['prefecture']);
+            }
+            if( !empty($input['municipalities']) ){
+                $db->where('municipalities', 'like', "%{$input['municipalities']}%");
+            }
+        }
         //Userテーブルのサブクエリ usersテーブルのid名が被るから idをu_idにリネーム
         $u = DB::table('users')->select( DB::raw( 'id as u_id'), 'nickname','profile_img_path');
         //leftjoinで$dbに$uを結合
@@ -32,17 +67,32 @@ class HobbyController extends Controller
             // left join の on句
             $join->whereRaw( 'user_id = u_id ' );
                 });
+        //検索条件を保管
+        $data = Session::get('hobby.search.input');
+        //データを取得
         $hobbys = $db->get();
-
+        //検索結果が無い場合のメッセージ
+        $mes = "";
+        if($hobbys->isEmpty()){
+            $mes = "対象データがありませんでした。";
+        }
+        //検索フォームの構築
+        $nullitem_category =   [ '' => 'カテゴリーを選択' ];
+        $nullitem_prefecture = [ '' => '県名を入力して下さい' ];
+        $form = [
+            'category'          => Form::select('category', $nullitem_category + __('define.category'), $data['category']?? null,["class"=>"", "id"=>"category"] ),
+            'prefecture'        => Form::select('prefecture', $nullitem_prefecture  + __('define.prefecture'), $data['prefecture']?? null,["class"=>"", "id"=>"prefecture"] ),
+            'municipalities'    => Form::text('municipalities', $data['municipalities'] ?? null, ["class"=>"", "id"=>"municipalities", "placeholder"=>"市区町村を入力して下さい","autocomplete"=>"off"]),
+        ];
         $user = Session::get('user');
-
         $user = User::where( 'id', $user[0]->id )->first();
-
         $def['prefecture']  = __('define.prefecture');
         $view = view('hobbys.hobbys_list');
-        $view->with( 'user', $user);
-        $view->with( 'hobbys', $hobbys);
-        $view->with( 'def', $def);
+        $view->with( 'user',    $user);
+        $view->with( 'hobbys',  $hobbys);
+        $view->with( 'def',     $def);
+        $view->with( 'form',    $form);
+        $view->with( 'mes',     $mes);
         return $view;
     }
 
