@@ -46,12 +46,12 @@
     .signup input {
         margin-bottom: 10px;
         border-color: #1E48B1;
-        color: #fcbe14;
+        color: #000;
     }
     
     .signup input:focus {
         border-color: #1af;
-        color: #fff;
+        color: #000;
     }
     .text {
         text-align: left;

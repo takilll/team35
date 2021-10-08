@@ -31,6 +31,6 @@ class hobby extends Model
              . " WHERE mail = '{$mail}' ";
         return DB::select($sql);
     }
- 
+
 }
 

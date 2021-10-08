@@ -1,7 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
+// use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+// use App\Contact;
+use App\Mail\ContactMail;
 use Illuminate\Http\Request;
 
 use App\Models\Hobby;
@@ -111,12 +114,20 @@ class HobbyController extends Controller
 
     public function edit(Request $request)
     {
+        //瀧川追加:ログインしていなければログイン画面へ戻る
+        if(!Session::has('user')){
+            return redirect('login');
+        }
         $user = User::find($request->id);
         return view('hobbys.profile_edit', ['user' => $user]);
     }
 
     public function update(Request $request)
     {
+        //瀧川追加:ログインしていなければログイン画面へ戻る
+        if(!Session::has('user')){
+            return redirect('login');
+        }
         $user = User::find($request->id);
         if (Hash::needsRehash($user)) {
             $hashed = Hash::make('password');
@@ -191,46 +202,93 @@ class HobbyController extends Controller
 
     public function contact()
     {
-        //フォーム入力画ページのviewを表示
-        return view('contact');
+        //瀧川追加:ログインしていなければログイン画面へ戻る
+        if(!Session::has('user')){
+            return redirect('login');
+        }
+        $user = Session::get('user');
+        $user = User::where( 'id', $user[0]->id )->first();
+        $view = view('hobbys.contact');
+        $view->with( 'user', $user);
+        return $view;
     }
 
-    public function send(Request $request)
+    public function confirm()
     {
+        //瀧川追加:ログインしていなければログイン画面へ戻る
+        if(!Session::has('user')){
+            return redirect('login');
+        }
         $request->validate([
-            'title' => 'required',
-            'nickname' => 'required',
-            'mail' => 'required|mail',
-            'body'  => 'required'
+            'title'     => 'required|max:50',
+            'nickname'     => 'required|max:100',
+            'mail'    => 'required|mail',
+            'message' => 'required|max:300',
         ]);
 
-        //フォームから受け取ったactionの値を取得
-        $action = $request->input('action');
-        
-        //フォームから受け取ったactionを除いたinputの値を取得
-        $inputs = $request->except('action');
+        // ここを追記
+        // フォームから受け取ったすべてのinputの値を取得
+        $inputs = $request->all();
 
-        //actionの値で分岐
-        if($action !== 'submit'){
-            return redirect()
-                ->route('contact')
-                ->withInput($inputs);
+        $user = Session::get('user');
+        $user = User::where( 'id', $user[0]->id )->first();
+        $view = view('hobbys.confirm', ['inputs' => $inputs]);
+        $view->with( 'user', $user);
+        return $view;
+    }
 
-        } else {
-            //入力されたメールアドレスにメールを送信
-            \Mail::to($inputs['mail'])->send(new ContactSendmail($inputs));
-
-            //再送信を防ぐためにトークンを再発行
-            $request->session()->regenerateToken();
-
-            //送信完了ページのviewを表示
-            return view('contact.thanks');
-            
+    public function process()
+    {
+        //瀧川追加:ログインしていなければログイン画面へ戻る
+        if(!Session::has('user')){
+            return redirect('login');
         }
+        $action = $request->get('action', 'return');
+        $input  = $request->except('action');
+
+        if($action === 'submit') {
+
+            // DBにデータを保存
+            $contact = new Contact();
+            $contact->fill($input);
+            $contact->save();
+
+            // メール送信
+            Mail::to($input['mail'])->send(new ContactMail('mails.contact', 'お問い合わせありがとうございます', $input));
+
+            $user = Session::get('user');
+            $user = User::where( 'id', $user[0]->id )->first();
+            // $view = view('hobbys.confirm');
+            $view->with( 'user', $user);
+            return redirect()->route('complete');
+        } else {
+            $user = Session::get('user');
+            $user = User::where( 'id', $user[0]->id )->first();
+            // $view = view('hobbys.confirm');
+            $view->with( 'user', $user);
+            return redirect()->route('contact')->withInput($input);
+        }
+    }
+
+    public function complete()
+    {
+        //瀧川追加:ログインしていなければログイン画面へ戻る
+        if(!Session::has('user')){
+            return redirect('login');
+        }
+        $user = Session::get('user');
+        $user = User::where( 'id', $user[0]->id )->first();
+        $view = view('hobbys.complete');
+        $view->with( 'user', $user);
+        return $view;
     }
 
     public function mypage(Request $request)
     {
+        //瀧川追加:ログインしていなければログイン画面へ戻る
+        if(!Session::has('user')){
+            return redirect('login');
+        }
         $nullitem = [ '' => '選択して下さい' ];
         //フォームの構築
         $form = [

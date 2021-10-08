@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>問い合わせ</title>
-    <?php include('sidebar_css.php'); ?>
+    @include('hobbys.sidebar_css')
     <style>
         h1 {
         margin:0;
@@ -71,18 +71,16 @@
     </style>
 </head>
 <body>
-@include('sidebar.php');
+@include('hobbys.sidebar')
     <div class="content_wrapper">
-    <h1>趣味への問い合わせ</h1>
-    <form method="post" action="post" class="">
-        <p>件名</p>
-        {{ $inputs['title'] }}
-        <input type="text" class="" minlength="10" maxlength="50" required>
-        <p>ニックネーム：{{ $value['nickname'] }}</p>
-        <p>メールアドレス：{{ $value['mail'] }}</p>
+    <h1>趣味への問い合わせ内容確認</h1>
+    <form method="post" action="{{ route('process', ['id'=> $contact->id]) }}" class="">
+        @csrf
+        <p>件名：{{ $contact->title }}</p>
+        <p>ニックネーム：{{ $user->nickname }}</p>
+        <p>メールアドレス：{{ $user->mail }}</p>
         <p>問い合わせ内容</p>
-        {!! nl2br(e($inputs['body'])) !!}
-        <textarea id="message" name="message" minlength="10" maxlength="50" required></textarea>
+        {{ $contact->message }}
     </form>
     <form action="">
         <button class="inquiry" type="submit">問い合わせる</button>

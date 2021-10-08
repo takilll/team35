@@ -29,8 +29,10 @@ Route::any('/hobby/regist', [HobbyController::class, 'regist'])->name('hobby.reg
 Route::post('/regist',      [HobbyController::class, 'store'])->name('hobby.proc');
 
 // 問い合わせ入力ページ
-Route::get('/contact/{id}', [App\Http\Controllers\HobbyController::class, 'contact'])->name('user_contact');
-Route::post('/contact/{id}', [App\Http\Controllers\HobbyController::class, 'send'])->name('user_send');
+Route::get('/contact', [App\Http\Controllers\HobbyController::class, 'contact'])->name('contact');
+Route::post('/confirm', [App\Http\Controllers\HobbyController::class, 'confirm'])->name('confirm');
+Route::post('/complete', [App\Http\Controllers\HobbyController::class, 'process'])->name('process');
+Route::get('/complete', [App\Http\Controllers\HobbyController::class, 'complete'])->name('complete');
 // ユーザー情報編集
 Route::get('/user/edit/{id}', [App\Http\Controllers\HobbyController::class, 'edit'])->name('user_edit');
 Route::post('/user/edit/{id}', [App\Http\Controllers\HobbyController::class, 'update'])->name('user_update');
