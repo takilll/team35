@@ -17,13 +17,13 @@
                 <!-- Add icons to the links using the .nav-icon class
                     with font-awesome or any other icon font library -->
                 <li class="nav-item menu-open">
-                  <a href="#" class="nav-link active">
+                  <a href="{{route('hobby.list')}}" class="nav-link active">
                     <p>ホーム</p>
                   </a>
                   <a href="{{route('hobby.regist')}}" class="nav-link active">
                     <p>趣味新規登録</p>
                   </a>
-                  <a href="{{route('user_mypage',$user->id)}}" class="nav-link active">
+                  <a href="{{route('user_mypage')}}" class="nav-link active">
                   {{-- <a href="{{ route('user_mypage', ['id'=> $user->id]) }}" class="nav-link active"> --}}
                     <p>My投稿一覧画面</p>
                   </a>

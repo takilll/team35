@@ -200,9 +200,9 @@
         <p>メールアドレス：{{ $user->mail }}</p>
         <p>問い合わせ内容</p>
         <textarea id="message" name="message" minlength="10" maxlength="300" required></textarea>
-    </form>
-    <form action="">
-        <button class="inquiry" type="submit">問い合わせる</button>
+        <div class="contact_btn">
+            <button class="inquiry" type="submit">問い合わせる</button>
+        </div>
     </form>
     </div>
 </body>

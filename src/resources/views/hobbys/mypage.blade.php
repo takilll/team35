@@ -6,19 +6,188 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @include('hobbys.sidebar_css')
     <style>
+    /* これも無いとだめ */
     .content_wrapper {
         transition: margin-left .3s ease-in-out;
         margin-left: 250px;
     }
+    /* これが絶対必要スクロールがついてこない */
+    .test2 {
+            position: fixed; 
+        }
+
+    /* 木元作成CSS */
+    img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+
+    .hobby__list{
+        padding: 10px;
+    }
+
+    .hobby__item{
+        display: flex;
+        justify-content: space-between;
+        max-width: 1000px;
+        padding: 10px;
+        border-bottom: 1px solid #eef;
+    }
+
+    .user__frame{
+        width: 100%;
+        height: 80px;
+    }
+
+    .user{
+        /* width: 80px; */
+        text-align: center;
+    }
+
+    .user img{
+        border-radius: 50%;
+        width: 100%;
+        /* width: 80px;
+        height: 80px; */
+    }
+
+    .content{
+        width: calc(100% - 80px);
+        /* width: 90%; */
+        padding: 10px;
+    }
+
+    .content__item{
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    .content__detail{
+        width: 25%;
+    }
+
+    .hobby__img{
+        width: 70%;
+    }
+
+    .hobby_img_frame{
+        /* width: 100%;
+        height: 50vw; */
+        width: 400px;
+        height: 250px;
+        box-shadow: 5px 10px 20px rgba(0,0,0,0.25);
+        border-radius: 15px;
+    }
+
+    .hobby__img img{
+        border-radius: 15px;
+    }
+
+    .content__text{
+        margin-top:10px;
+        width: 100%;
+    }
+
+
+    /* 検索エリア */
+    .search__area{
+        max-width: 1000px;
+    }
+
+    input{
+        width: 300px;
+    }
+
+    select{
+        width: 200px;
+        margin: 10px;
+    }
+
+    input[type="text"]{
+        border: solid 1px #aaa;
+        border-radius:5px;
+        padding:10px;
+        font-size: 16px;
+        margin: 10px;
+    }
+
+    input[type="text"]:focus {
+        border: 1px solid #fcbe14;
+        outline: 0;
+    }
+
+
+    select{
+        border: solid 1px #aaa;
+        border-radius:5px;
+        padding:10px;
+        font-size: 16px;
+    }
+
+    select:focus {
+        border: 1px solid #fcbe14;
+        outline: 0;
+    }
+
+    .search__btn{
+        display: inline;
+        margin: 8px;
+    }
+
+    .btn__search {
+        display: inline-block;
+        font-size: 16px;
+        width: 40%;
+        padding: 10px;
+        text-align: center;
+        text-decoration: none;
+        color: #fff;
+        background:#fcbe14;
+        border-bottom:4px solid #1E48B1;
+        border-radius: 10px;
+        transition: .0s;
+    }
+    .btn__search:hover {
+        cursor: pointer;
+        text-decoration: none;
+        background:#1E48B1;
+        transform: translate3d(0, 4px, 0);
+        transition: .0s;
+        border-bottom: none;
+    }
+
+    .btn__clear {
+        display: inline-block;
+        font-size: 16px;
+        width: 40%;
+        padding: 10px;
+        text-align: center;
+        text-decoration: none;
+        color: #fff;
+        background:#fcbe14;
+        border-bottom:4px solid #1E48B1;
+        border-radius: 10px;
+        transition: .0s;
+    }
+    .btn__clear:hover {
+        cursor: pointer;
+        text-decoration: none;
+        background:#1E48B1;
+        transform: translate3d(0, 4px, 0);
+        transition: .0s;
+        border-bottom: none;
+    }
+    
     h1 {
         background: #fcbe14;
         border-bottom: 15px solid #eef;
         font-size: 50px;
         line-height: 50px;
         margin-bottom: 0;
-    }
-    h3 {
-        margin-left: 30px;
     }
     .main_content {
         display: flex;
@@ -98,28 +267,30 @@
     .sub_content {
     display: flex;
     }
-    .my_edit .edit {
-        padding: 10px 20px;
-        color: #fff;
-        font-size: 86%;
-        line-height: 1.0em;
-        cursor: pointer;
-        border: none;
-        border-radius: 5px;
-        background-color: #1E48B1;
-    }
-    .my_edit .delete {
-        padding: 10px 20px;
-        color: #fff;
-        font-size: 86%;
-        line-height: 1.0em;
-        cursor: pointer;
-        border: none;
-        border-radius: 5px;
-        background-color: #1E48B1;
-    }
     .edit_button {
-        margin-left: 30px;
+        display: flex;
+    }
+    .edit {
+        padding: 10px 20px;
+        color: #fff;
+        font-size: 86%;
+        line-height: 1.0em;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        background-color: #1E48B1;
+        margin-right: 10px;
+    }
+    .delete {
+        padding: 10px 20px;
+        color: #fff;
+        font-size: 86%;
+        line-height: 1.0em;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        background-color: #1E48B1;
+        margin-right: 5Spx;
     }
     
     .test2 {
@@ -134,44 +305,49 @@
     </div>
     <div class="content_wrapper">
         <h1>MY投稿一覧</h1>
-        @foreach( $posts as $value )
-            <div class="main_content">
-                <div class="my-icon">
-                    <img src="{{ $value['profile_img_path'] }}" alt="">
-                </div>
-                <div class="hobby_content">
-                    <h3 class="title">{{ $value['title'] }}</h3>
-                    <div class="sub_content">
-                        <div class="sub_sub_content">
-                            <div class="hobby_text">
-                                <p class="nickname">{{ $value['nickname'] }}</p>
-                                <p class="prefecture municipalities">{{ $value['prefecture'] }}{{ $value['municipalities'] }}</p>
-                                <p class="time">{{ $value['updated_at'] }}</p>
-                            </div>
-                            <div class="like_hobby">
-                                <div class="">参加したいね！</div>
-                                <div class="like">
-                                    <img src="\team35\src\resources\views\img\icon-heart-twitterblue.svg" alt="">
+        <div class="hobby__list">
+            @foreach ($hobbys as $hobby)
+                <div class="hobby__item">
+                    <div class="user">
+                        <div class="user__frame">
+                            @if (!empty($hobby->profile_img_path))
+                                <img src="../../uploads/profile/{{ $hobby->profile_img_path}}">
+                            @else
+                                <img src="../../uploads/profile/icon-profile.svg">
+                            @endif
+                        </div>
+                    </div>
+                    <div class="content">
+                        <h3 class="content__title">{{$hobby->title}}</h1>
+                            <div class="content__item">
+                                <div class="content__detail">
+                                    <p>{{$hobby->nickname}}</p>
+                                    <p>場所 {{$def['prefecture'][$hobby->prefecture]?? __('')}}{{$hobby->municipalities}}</p>
+                                    <p>投稿日時 {{$hobby->created_at}}</p>
+                                    <p>参加したいね</p>
+                                    <div class="edit_button">
+                                        <p><a href="{{ route('hobby_edit', $hobby->id) }}" class=""><button class="edit">編集する</button></a>
+                                        <p><a href="{{ route('hobby_delete', $hobby->id) }}" class=""><button class="delete">削除する</button></a>
+                                    </div>
                                 </div>
-                                <div class="like-count">101462475</div> 
+                                <div class="hobby__img">
+                                    <div class="hobby_img_frame">
+                                        @if (!empty($hobby->hobby_img_path))
+                                            <img src="../../uploads/post/{{ $hobby->hobby_img_path }}">
+                                        @else
+                                            <img src="../../uploads/post/no_image_logo.png">
+                                        @endif
+                                    </div>
+                                </div>
+                                <!-- width 100% display flexwrapで折り返しにする -->
+                                <div class="content__text">
+                                    <p>{{$hobby->text}}</p>
+                                </div>
+                                
                             </div>
-                        </div>
-                        <div class="hobby_picture">
-                            <img src="{{ $value['hobby_img_path'] }}" alt="">
-                        </div>
                     </div>
-                    <div class="edit_button">
-                        <form action="post" class="my_edit">
-                            <button class="edit" type="submit">編集する</button>
-                            <button class="delete" type="submit">削除する</button>
-                        </form>
-                        <div class="mypage_text">
-                            {{ $value['text'] }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endforeach
-    </div>
+                </div>    
+            @endforeach
+        </div>
 </body>
 </html>

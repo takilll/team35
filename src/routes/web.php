@@ -21,10 +21,10 @@ Route::get('/', function () {
 //Auth::routes();
 
 // 投稿一覧ページ
-Route::any('/index',        [HobbyController::class, 'list'])->name('hobby.list');
+Route::any('/index', [App\Http\Controllers\HobbyController::class, 'list'])->name('hobby.list');
 
 // 趣味新規投稿一覧ページ
-Route::any('/hobby/regist', [HobbyController::class, 'regist'])->name('hobby.regist');
+Route::any('/regist', [HobbyController::class, 'regist'])->name('hobby.regist');
 // 趣味登録処理
 Route::post('/regist',      [HobbyController::class, 'store'])->name('hobby.proc');
 
@@ -34,8 +34,8 @@ Route::post('/confirm', [App\Http\Controllers\HobbyController::class, 'confirm']
 Route::post('/complete', [App\Http\Controllers\HobbyController::class, 'process'])->name('process');
 Route::get('/complete', [App\Http\Controllers\HobbyController::class, 'complete'])->name('complete');
 // ユーザー情報編集
-Route::get('/user/edit/{id}', [App\Http\Controllers\HobbyController::class, 'edit'])->name('user_edit');
-Route::post('/user/edit/{id}', [App\Http\Controllers\HobbyController::class, 'update'])->name('user_update');
+Route::get('/user/edit', [App\Http\Controllers\HobbyController::class, 'edit'])->name('user_edit');
+Route::post('/user/edit', [App\Http\Controllers\HobbyController::class, 'update'])->name('user_update');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -49,7 +49,11 @@ Route::post('/signup/post', [App\Http\Controllers\HobbyController::class, 'postR
 Route::get('/logout', [App\Http\Controllers\HobbyController::class, 'logout'])->name('logout');
 
 // ユーザーマイページ
-Route::get('/user/mypage/{id}', [App\Http\Controllers\HobbyController::class, 'mypage'])->name('user_mypage');
-// Route::post('/user/mypage/{id}', [App\Http\Controllers\HobbyController::class, 'update'])->name('user_update');
+Route::get('/mypage', [App\Http\Controllers\HobbyController::class, 'mypage'])->name('user_mypage');
+// 投稿内容の編集と削除
+Route::get('/hobby_edit/{id}', [App\Http\Controllers\HobbyController::class, 'hobby_edit'])->name('hobby_edit');
+Route::post('/hobby_edit/{id}', [App\Http\Controllers\HobbyController::class, 'hobby_update'])->name('hobby_update');
+Route::get('/hobby_delete/{id}', [App\Http\Controllers\HobbyController::class, 'hobby_delete'])->name('hobby_delete');
+Route::post('/hobby_delete/{id}', [App\Http\Controllers\HobbyController::class, 'hobby_remove'])->name('hobby_remove');
 
 

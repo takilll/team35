@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 // use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 // use App\Contact;
 use App\Mail\ContactMail;
 use Illuminate\Http\Request;
@@ -13,7 +14,8 @@ use DB;
 use Session;
 use Form;
 use App\Models\User;
-
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class HobbyController extends Controller
@@ -162,14 +164,31 @@ class HobbyController extends Controller
         return redirect()->route('hobby.list');
     }
 
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    // }
+
+    protected function validator(array $data)
+    {
+        return Validator::make($data, [
+            'new_password' => 'required|string|min:6|confirmed',
+        ]);
+    }
+    
     public function edit(Request $request)
     {
         //瀧川追加:ログインしていなければログイン画面へ戻る
         if(!Session::has('user')){
             return redirect('login');
         }
-        $user = User::find($request->id);
-        return view('hobbys.profile_edit', ['user' => $user]);
+        $user = Session::get('user');
+        $user = User::find( $user[0]->id );
+        // $user = User::find($request->id);
+        // return view('hobbys.profile_edit', ['user' => $user]);
+        $view = view('hobbys.profile_edit');
+        $view->with( 'user',    $user);
+        return $view;
     }
 
     public function update(Request $request)
@@ -178,14 +197,50 @@ class HobbyController extends Controller
         if(!Session::has('user')){
             return redirect('login');
         }
-        $user = User::find($request->id);
-        if (Hash::needsRehash($user)) {
-            $hashed = Hash::make('password');
-        }
+        $user = Session::get('user');
+        $user = User::find( $user[0]->id );
+        // $user = User::find($request->id);
+        Log::debug("current:".$request->current_password);
+        Log::debug("new:".$request->new_password);
+        if($request->current_password!='' && $request->new_password!='' ){
+            // ID のチェック
+            //（ここでエラーになることは通常では考えられない）
+            Log::debug("before id verify");
+            // if ($request->id != $id = Auth::id() ) {
+            //     return redirect('/index')
+            //             ->with('warning', '致命的なエラーです');
+            // }
+            // 現在のパスワードを確認
+            Log::debug("before password verify");
+            if (!password_verify($request->current_password, $user->password)) {
+            return redirect('/user/edit/{id}')
+                    ->with('warning', 'パスワードが違います');
+            }
+            // Validation（6文字以上あるか，2つが一致しているかなどのチェック）
+            Log::debug("before validate");
+            $this->validator($request->all())->validate();
+            // パスワードを保存
+            Log::debug($user->password);
+            $user->password = Hash::make($request->new_password);
+            Log::debug($user->password);
+        } 
+        // return redirect('/index')
+        //         ->with('status', 'パスワードを変更しました');
         $user->nickname = $request->nickname;
         $user->mail = $request->mail;
-        $user->password = Hash::make($request->password);
-        $user->profile_img_path = $request->profile_img_path;
+        if ($request -> profile_img_path != null) {
+            $file = $request->file('profile_img_path');
+            // getClientOriginalName()  拡張子を含め、アップロードしたファイルのファイル名を取得することができる。
+            $image_extension = pathinfo($file -> getClientOriginalName(), PATHINFO_EXTENSION);
+            // file名が重複しないようにmail_time.拡張子に変更。
+            $image_name = $user->mail . '_' . date('YmdHis') . '.' . $image_extension;
+            $user->profile_img_path = $image_name;
+            //public_path() publicディレクトリの完全パスを返す。publicディレクトリ内にuploadsディレクトリを作成。
+            $target_path = public_path('uploads/profile/');
+            $file -> move($target_path, $user->profile_img_path);
+        }else {
+            $user->profile_img_path = "profile_img_path";
+        }
         $user->save();
         return redirect('index');
     }
@@ -339,14 +394,123 @@ class HobbyController extends Controller
         if(!Session::has('user')){
             return redirect('login');
         }
+        $user = Session::get('user');
+        $user = User::find( $user[0]->id );
+        $query = <<<SQL
+            SELECT
+                users.nickname AS nickname,
+                users.profile_img_path AS profile_img_path,
+                posts.*
+            FROM
+                posts
+                LEFT JOIN
+                users ON users.id = posts.user_id
+            WHERE
+                posts.user_id = $user->id
+        SQL;
+
+        $def['prefecture']  = __('define.prefecture');
+        $result = DB::select($query);
+        $view = view('hobbys.mypage');
+        $view->with( 'def',     $def);
+        $view->with( 'user',    $user);
+        $view->with( 'hobbys',  $result);
+        return $view;
+    }
+
+    public function hobby_edit(Request $request)
+    {
+        // ID のチェック
+        // $user = Session::get('user');
+        // $user = User::find( $user[0]->id );
+        // $post = Session::get('post');
+        // $post = Post::find( $post->id );
+        $user = User::find($request->id);
+        $post = Post::find($request->id);
+        $view = view('hobbys.hobby_edit');
         $nullitem = [ '' => '選択して下さい' ];
         //フォームの構築
         $form = [
-            'category'   => Form::select('category', $nullitem + __('define.category'), '',["class"=>"", "id"=>"category"] ),
-            'prefecture' => Form::select('prefecture', $nullitem + __('define.prefecture'), '',["class"=>"", "id"=>"prefecture"] ),
+            'category'   => Form::select('category', $nullitem + __('define.category'), $post->category,["class"=>"", "id"=>"category"] ),
+            'prefecture' => Form::select('prefecture', $nullitem + __('define.prefecture'), $post->prefecture,["class"=>"", "id"=>"prefecture"]  ),
         ];
-        return view('hobbys.regist')->with('form',$form);
+        $view->with( 'user',    $user);
+        $view->with( 'post',  $post);
+        $view->with( 'form', $form);
+        return $view;
     }
+
+    public function hobby_update(Request $request)
+    {
+        $request->validate([
+            'category'              =>'required',
+            'title'                 =>'required|max:30',
+            'text'                  =>'required|max:300',
+            'hobby_img_path'        =>'image',
+            'prefecture'            =>'required',
+            'municipalities'        =>'max:10'
+        ],
+        [
+            'required'              =>'必須入力です。',
+            'image'                 =>'画像はjpg、png、bmp、gif、svg、webpのファイルを選択して下さい。'
+        ]);
+
+        if ($file = $request->hobby_img_path) {
+            // getClientOriginalName()  拡張子を含め、アップロードしたファイルのファイル名を取得することができる。
+            $fileName = time() . $file->getClientOriginalName();
+            //public_path() publicディレクトリの完全パスを返す。publicディレクトリ内にuploadsディレクトリを作成。
+            $target_path = public_path('uploads/post/');
+            $file->move($target_path, $fileName);
+        }else {
+            $fileName = "hobby_img_path";
+        }
+
+        // $user = Session::get('user');
+        // $user = User::find( $user[0]->id );
+        // $post = Session::get('post');
+        // $post = Post::find( $post->id );
+        $user = Session::get('user');
+        $post = Post::find($request->id);
+        // ログインしているuser_idを何処で拾うか
+        $post->user_id        = $user[0]->id;
+        $post->category       = $request->category;
+        $post->title          = $request->title;
+        $post->text           = $request->text;
+        $post->hobby_img_path = $fileName;
+        $post->prefecture     = $request->prefecture;
+        $post->municipalities = $request->municipalities;
+        $post->save();
+
+        return redirect('mypage');
+    }
+
+    public function hobby_delete(Request $request)
+    {
+        $post = Post::find($request->id);
+        // $post = Session::get('post');
+        // $post = Post::find( $post[0]->id );
+        $nullitem = [ '' => '選択して下さい' ];
+        //フォームの構築
+        $form = [
+            'category'   => Form::select('category', $nullitem + __('define.category'), $post->category,["class"=>"", "id"=>"category"] ),
+            'prefecture' => Form::select('prefecture', $nullitem + __('define.prefecture'), $post->prefecture,["class"=>"", "id"=>"prefecture"] ),
+        ];
+        // $view = view('hobbys.hobby_delete');
+        // $view->with( 'post',  $post);
+        // $view->with( 'form', $form);
+        // return $view;
+        return view('hobbys.hobby_delete', ['post' => $post]);
+    }
+
+    public function hobby_remove(Request $request)
+    {
+        $post = Post::find($request->id);
+        // $post = Session::get('post');
+        // $post = Post::find( $post[0]->id );
+        $post->delete();
+        return redirect('mypage');
+    }
+
 
    
 }
