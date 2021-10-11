@@ -12,7 +12,9 @@
     .content_wrapper {
         transition: margin-left .3s ease-in-out;
         margin-left: 250px;
+        padding: 30px; /*瀧川追加*/
     }
+
     /* これが絶対必要スクロールがついてこない */
     .test2 {
             position: fixed; 
@@ -140,6 +142,43 @@
         margin: 8px;
     }
 
+    /*瀧川追加*/
+    .btn_clear {
+        background: none;
+        border: none;
+        outline: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        color: #fff;
+    }
+    /*瀧川追加*/
+    .btn_new {
+        max-width: 100px;
+        display: inline-block;
+        font-size: 16px;
+        width: 40%;
+        padding: 10px;
+        text-align: center;
+        text-decoration: none;
+        color: #fff;
+        background:#fcbe14;
+        border: 0.5px solid #333;
+        border-bottom:4px solid #1E48B1;
+        border-radius: 10px;
+        transition: .0s;
+        margin: 13px 0px 13px 11px;
+    }
+    /*瀧川追加*/
+    .btn_new:hover {
+        cursor: pointer;
+        text-decoration: none;
+        background:#1E48B1;
+        transform: translate3d(0, 4px, 0);
+        transition: .0s;
+        border-bottom: none;
+    }
+
     .btn__search {
         display: inline-block;
         font-size: 16px;
@@ -152,6 +191,7 @@
         border-bottom:4px solid #1E48B1;
         border-radius: 10px;
         transition: .0s;
+        margin: 13px 0px 13px 0px; /*瀧川追加*/
     }
     .btn__search:hover {
         cursor: pointer;
@@ -174,6 +214,7 @@
         border-bottom:4px solid #1E48B1;
         border-radius: 10px;
         transition: .0s;
+        margin: 13px 0px 13px 0px; /*瀧川追加*/
     }
     .btn__clear:hover {
         cursor: pointer;
@@ -193,8 +234,8 @@
     </div>
 
     <div class="content_wrapper">
-        <div class="hobby__regist">
-            <a href="{{route('hobby.regist')}}"><button>新規登録</button></a>
+        <div class="btn_new">
+            <a href="{{route('hobby.regist')}}"><button class="btn_clear">新規登録</button></a>
         </div>
         <form method="post" name="frmSearch" action="">
             @csrf      

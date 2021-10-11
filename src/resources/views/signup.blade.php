@@ -54,6 +54,10 @@
         border-color: #1af;
     }
 
+    .name_mail {
+        margin: 25px 0px 25px 0px;
+    }
+
     .text {
         top: -4px;
         text-align: left;
@@ -63,7 +67,7 @@
     }
     
     .birth-area {
-        padding-top: 10px;
+        padding-top: 20px;
         padding-bottom: 3px;
     }
 
@@ -79,6 +83,7 @@
         background-color: #1E48B1;
         color: #fff;
         font-size: 15px;
+        margin-top: 10px;
     }
 
     </style>
@@ -90,8 +95,8 @@
             @csrf
             <img src="logo4_2.png" alt="" class="logo-white">
             <h1>アカウントの作成</h1>
-            <input type="text" class="form-control" name="nickname" placeholder="ニックネーム" maxlength="50" required autofocus>
-            <input type="email" class="form-control" name="mail" placeholder="メールアドレス" maxlength="50" required>
+            <input type="text" class="form-control name_mail" name="nickname" placeholder="ニックネーム" maxlength="50" required autofocus>
+            <input type="email" class="form-control name_mail" name="mail" placeholder="メールアドレス" maxlength="50" required>
             <div class="birth-area">    
                 <select name="birth_year" class="birth">
                 <option value="">年</option>
@@ -271,13 +276,13 @@
                 <option value="30">30</option>
                 <option value="31">31</option>
                 </select>
-            <br><p class="text mt-2 mb-3 text-muted">※ 生年月日は登録後の変更ができません。</p>
+            <br><p class="text mt-1 mb-3 text-muted">※ 生年月日は登録後の変更ができません。</p>
             </div>
             <input type="password" class="form-control" name="password" placeholder="パスワード" minlength="8" maxlength="16" required>
-            <p class="text mt-2 mb-3 text-muted">※ パスワードは8-16英数字(a-z,A-Z,0-9)で設定してください。</p>
+            <p class="text mt-1 mb-3 text-muted">※ パスワードは8-16英数字(a-z,A-Z,0-9)で設定してください。</p>
             <!--- <div class="mb-0 select"> --->
                 <input type="file" name="profile_img_path" class="form-control form-control-sm">
-                <p class="text mt-2 mb-3 text-muted">※ プロフィール画像を選択してください。</p>
+                <p class="text mt-1 mb-3 text-muted">※ プロフィール画像を選択してください。</p>
             <!--- </div> --->
             <button class="w-100 btn btn-lg" type="submit">登録する</button>
             <p class="mt-3 mb-2"><a href="login">ログインする</a></p>

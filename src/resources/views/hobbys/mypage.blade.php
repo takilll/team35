@@ -25,7 +25,7 @@
 
 
     .hobby__list{
-        padding: 10px;
+        padding: 20px; /*瀧川修正*/
     }
 
     .hobby__item{

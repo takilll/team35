@@ -11,6 +11,7 @@
 .content_wrapper {
     transition: margin-left .3s ease-in-out;
     margin-left: 250px;
+    padding: 40px; /*瀧川追加*/
 }
 /* これが絶対必要スクロールがついてこない */
 .test2 {
@@ -31,6 +32,11 @@ box-sizing: border-box;
 .item{
     width: 100%;
     margin-bottom: 20px;
+}
+
+/*瀧川追加*/
+span {
+    color: red;
 }
 
 input[type="text"]{
@@ -169,7 +175,6 @@ textarea:focus {
                                 {{$message}}
                             @enderror
                         </div>
-                        <hr>
                         <div class="item">
                             <span>＊趣味に関する写真</span>
                             <input class="inputs" type="file" name="hobby_img_path">
@@ -177,6 +182,7 @@ textarea:focus {
                                 {{$message}}
                             @enderror
                         </div>
+                        <hr>
                         <div>
                             <button class="post__btn" type="submit">投稿する</button>
                         </div>
