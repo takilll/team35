@@ -5,14 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 // use App\Contact;
-use App\Mail\ContactMail;
+use App\Mail\ContactSendmail;
 use Illuminate\Http\Request;
+// use App\Mail\ContactSendmail;
 
 use App\Models\Hobby;
 use App\Models\Post;
 use DB;
 use Session;
 use Form;
+use App\Models\Contact;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -307,18 +309,26 @@ class HobbyController extends Controller
 
     public function contact()
     {
+        // dd($_GET['id']);
         //瀧川追加:ログインしていなければログイン画面へ戻る
         if(!Session::has('user')){
             return redirect('login');
         }
         $user = Session::get('user');
+        // dd($user);
         $user = User::where( 'id', $user[0]->id )->first();
+        // $_GET['id'];
+        $post =  Session::get('user_id');
+        $to_user =  Session::get('user');
+        $to_user = User::where('id', $_GET['id'])->get()->toArray();
         $view = view('hobbys.contact');
         $view->with( 'user', $user);
+        $view->with( 'to_user', $to_user[0]);
+        $view->with( 'post', $post);
         return $view;
     }
 
-    public function confirm()
+    public function confirm(Request $request)
     {
         //瀧川追加:ログインしていなければログイン画面へ戻る
         if(!Session::has('user')){
@@ -326,66 +336,90 @@ class HobbyController extends Controller
         }
         $request->validate([
             'title'     => 'required|max:50',
+            'id'     => 'required|max:50',
             'nickname'     => 'required|max:100',
-            'mail'    => 'required|mail',
-            'message' => 'required|max:300',
+            'mail'    => 'required|email',
+            'body' => 'required|max:300',
         ]);
-
         // ここを追記
         // フォームから受け取ったすべてのinputの値を取得
         $inputs = $request->all();
-
+        $to_user = User::where('id', $request['id']);
+        $post =  Session::get('user_id');
+        $to_user =  Session::get('user');
+        $to_user = User::where('id', $_GET['id'])->get()->toArray();
         $user = Session::get('user');
+        // Log::debug("get user data from db");
         $user = User::where( 'id', $user[0]->id )->first();
         $view = view('hobbys.confirm', ['inputs' => $inputs]);
         $view->with( 'user', $user);
+        $view->with( 'to_user', $to_user[0]);
+        $view->with( 'contact', ['title' => $request['title'],
+            'id' => $request['id'],
+            'nickname' => $request['nickname'],
+            'mail' => $request['mail'],
+            'body' => $request['body']
+        ]);
+        // Log::debug("end confirm");
         return $view;
     }
 
-    public function process()
+    public function send(Request $request)
     {
         //瀧川追加:ログインしていなければログイン画面へ戻る
         if(!Session::has('user')){
             return redirect('login');
         }
-        $action = $request->get('action', 'return');
-        $input  = $request->except('action');
+        //バリデーションを実行（結果に問題があれば処理を中断してエラーを返す）
+        $request->validate([
+            'user_id' => 'required',
+            'nickname' => 'required',
+            'mail' => 'required|email',
+            'to_user_id' => 'required',
+            'to_nickname' => 'required',
+            'to_mail' => 'required|email',
+            'title' => 'required',
+            'body'  => 'required',
+        ]);
 
-        if($action === 'submit') {
+        //フォームから受け取ったactionの値を取得
+        $action = $request->input('action');
+        Log::debug($action);
+        //フォームから受け取ったactionを除いたinputの値を取得
+        $inputs = $request->except('action');
+
+        //actionの値で分岐
+        if($action !== 'submit'){
+
+            return redirect()
+                ->route('hobby.list')
+                ->withInput($inputs);
+
+        } else {
 
             // DBにデータを保存
-            $contact = new Contact();
-            $contact->fill($input);
+            $contact = new Contact;
+            // $contact->fill($inputs);
+            // ログインしているuser_idを何処で拾うか
+            $contact->user_id        = $request->user_id;
+            $contact->nickname       = $request->nickname;
+            $contact->mail           = $request->mail;
+            $contact->to_user_id     = $request->to_user_id;
+            $contact->to_nickname    = $request->to_nickname;
+            $contact->to_mail        = $request->to_mail;
+            $contact->title          = $request->title;
+            $contact->body           = $request->body;
+        
             $contact->save();
+            //入力されたメールアドレスにメールを送信
+            \Mail::to($inputs['to_mail'])->send(new ContactSendmail($inputs));
 
-            // メール送信
-            Mail::to($input['mail'])->send(new ContactMail('mails.contact', 'お問い合わせありがとうございます', $input));
+            //再送信を防ぐためにトークンを再発行
+            $request->session()->regenerateToken();
 
-            $user = Session::get('user');
-            $user = User::where( 'id', $user[0]->id )->first();
-            // $view = view('hobbys.confirm');
-            $view->with( 'user', $user);
-            return redirect()->route('complete');
-        } else {
-            $user = Session::get('user');
-            $user = User::where( 'id', $user[0]->id )->first();
-            // $view = view('hobbys.confirm');
-            $view->with( 'user', $user);
-            return redirect()->route('contact')->withInput($input);
+            //送信完了ページのviewを表示
+            return view('hobbys.complete');
         }
-    }
-
-    public function complete()
-    {
-        //瀧川追加:ログインしていなければログイン画面へ戻る
-        if(!Session::has('user')){
-            return redirect('login');
-        }
-        $user = Session::get('user');
-        $user = User::where( 'id', $user[0]->id )->first();
-        $view = view('hobbys.complete');
-        $view->with( 'user', $user);
-        return $view;
     }
 
     public function mypage(Request $request)
@@ -420,22 +454,29 @@ class HobbyController extends Controller
 
     public function hobby_edit(Request $request)
     {
-        // ID のチェック
         // $user = Session::get('user');
         // $user = User::find( $user[0]->id );
         // $post = Session::get('post');
         // $post = Post::find( $post->id );
         $user = User::find($request->id);
-        $post = Post::find($request->id);
+        $post = Post::where('id', $_GET['id'])->get()->toArray();
+        // ID のチェック
+        // if($post[0]['user_id']!=$user[0]->id){
+        //     return view('hobby.mypage');
+        // }
+        // $user = User::where( 'id', $user[0]->id )->first();
+        // $post = Post::where( 'id', $post[0]->id )->first();
+        // $post = Post::find($request->id);
         $view = view('hobbys.hobby_edit');
         $nullitem = [ '' => '選択して下さい' ];
         //フォームの構築
         $form = [
-            'category'   => Form::select('category', $nullitem + __('define.category'), $post->category,["class"=>"", "id"=>"category"] ),
-            'prefecture' => Form::select('prefecture', $nullitem + __('define.prefecture'), $post->prefecture,["class"=>"", "id"=>"prefecture"]  ),
+            'category'   => Form::select('category', $nullitem + __('define.category'), $post[0]['category'],["class"=>"", "id"=>"category"] ),
+            'prefecture' => Form::select('prefecture', $nullitem + __('define.prefecture'), $post[0]['prefecture'],["class"=>"", "id"=>"prefecture"]  ),
         ];
         $view->with( 'user',    $user);
-        $view->with( 'post',  $post);
+        $view->with( 'post',  $post[0]);
+        // dd($post[0]);
         $view->with( 'form', $form);
         return $view;
     }
@@ -470,7 +511,9 @@ class HobbyController extends Controller
         // $post = Session::get('post');
         // $post = Post::find( $post->id );
         $user = Session::get('user');
-        $post = Post::find($request->id);
+        $post = Post::where('id', $_GET['id'])->first();
+        // dd($post);s
+        // $post = Post::find($request->id);
         // ログインしているuser_idを何処で拾うか
         $post->user_id        = $user[0]->id;
         $post->category       = $request->category;
@@ -479,32 +522,33 @@ class HobbyController extends Controller
         $post->hobby_img_path = $fileName;
         $post->prefecture     = $request->prefecture;
         $post->municipalities = $request->municipalities;
-        $post->save();
+        $post-> save();
 
         return redirect('mypage');
     }
 
     public function hobby_delete(Request $request)
     {
-        $post = Post::find($request->id);
+        // $post = Post::find($request->id);
+        $post = Post::where('id', $_GET['id'])->get()->toArray();
         // $post = Session::get('post');
         // $post = Post::find( $post[0]->id );
         $nullitem = [ '' => '選択して下さい' ];
         //フォームの構築
         $form = [
-            'category'   => Form::select('category', $nullitem + __('define.category'), $post->category,["class"=>"", "id"=>"category"] ),
-            'prefecture' => Form::select('prefecture', $nullitem + __('define.prefecture'), $post->prefecture,["class"=>"", "id"=>"prefecture"] ),
+            'category'   => Form::select('category', $nullitem + __('define.category'), $post[0]['category'],["class"=>"", "id"=>"category", 'disabled'=>'disabled'] ),
+            'prefecture' => Form::select('prefecture', $nullitem + __('define.prefecture'), $post[0]['prefecture'],["class"=>"", "id"=>"prefecture", 'disabled'=>'disabled'] ),
         ];
-        // $view = view('hobbys.hobby_delete');
-        // $view->with( 'post',  $post);
-        // $view->with( 'form', $form);
-        // return $view;
-        return view('hobbys.hobby_delete', ['post' => $post]);
+        $view = view('hobbys.hobby_delete');
+        $view->with( 'post',  $post[0]);
+        $view->with( 'form', $form);
+        return $view;
+        // return view('hobbys.hobby_delete', ['post' => $post]);
     }
 
     public function hobby_remove(Request $request)
     {
-        $post = Post::find($request->id);
+        $post = Post::where('id', $_GET['id'])->first();
         // $post = Session::get('post');
         // $post = Post::find( $post[0]->id );
         $post->delete();

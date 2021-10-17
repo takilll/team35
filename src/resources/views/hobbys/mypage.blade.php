@@ -326,8 +326,8 @@
                                     <p>投稿日時 {{$hobby->created_at}}</p>
                                     <p>参加したいね</p>
                                     <div class="edit_button">
-                                        <p><a href="{{ route('hobby_edit', $hobby->id) }}" class=""><button class="edit">編集する</button></a>
-                                        <p><a href="{{ route('hobby_delete', $hobby->id) }}" class=""><button class="delete">削除する</button></a>
+                                        <p><a href="{{ route('hobby_edit') }}?id={{ $hobby->id }}" class="" name="hobby_edit"><button class="edit">編集する</button></a>
+                                        <p><a href="{{ route('hobby_delete') }}?id={{ $hobby->id }}" class="" name="hobby_delete"><button class="delete">削除する</button></a>
                                     </div>
                                 </div>
                                 <div class="hobby__img">

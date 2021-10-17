@@ -4,7 +4,14 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="/css/sidebar_css.css">
+@include('hobbys.sidebar_css')
 <style>
+/* これも無いとだめ */
+.content_wrapper {
+    transition: margin-left .3s ease-in-out;
+    margin-left: 250px;
+}
 /* これが絶対必要スクロールがついてこない */
 .test2 {
         position: fixed; 
@@ -122,13 +129,19 @@ textarea:focus {
     transition: .0s;
     border-bottom: none;
 }
+.content_wrapper {
+    disable:
+}
 </style>
 
 <title>趣味削除画面</title>
 </head>
 <body>
+    <div class="test2">
+        @include('hobbys.sidebar')
+    </div>
     <div class="content_wrapper">
-        <form action="{{route('hobby_delete', ['id'=> $post->id])}}" method="post" enctype="multipart/form-data">
+        <form action="{{route('hobby_delete', ['id'=> $post['id']])}}" method="post" enctype="multipart/form-data" disabled>
             @csrf
             <div class="regist">
                 <div class="regist__content">
@@ -138,15 +151,15 @@ textarea:focus {
                     <div class="input__item">
                         <span>＊30文字以内</span>
                         <div class="item">
-                            <input class="inputs" type="text" name="title" value="{{ $post->title }}" placeholder="タイトルを入力下さい">
+                            <input class="inputs" type="text" name="title" value="{{ $post['title'] }}" placeholder="タイトルを入力下さい" disabled>
                             @error('title')
                                 {{$message}}
                             @enderror
                         </div>
                         <span>＊県名</span>
                         <div class="item" id="municipalities" value="">
-                            {{$form['prefecture'], $post->prefecture}}
-                            <input type="text" name="municipalities" class="municipalities" value="{{ $post->municipalities }}" placeholder="市区町村を入力下さい">
+                            {{$form['prefecture']}}
+                            <input type="text" name="municipalities" class="municipalities" value="{{ $post['municipalities'] }}" placeholder="市区町村を入力下さい" disabled>
                         </div>
                         <span>＊趣味カテゴリー</span>
                         <div class="item">
@@ -154,18 +167,19 @@ textarea:focus {
                         </div>
                         <span>＊300文字以内</span>
                         <div class="item">
-                            <textarea class="inputs" name="text" id="" cols="30" rows="10" value="" textarea placeholder="詳細を記入下さい">{{ $post->text }}</textarea>
+                            <textarea class="inputs" name="text" id="" cols="30" rows="10" value="" textarea placeholder="詳細を記入下さい" disabled>{{ $post['text'] }}</textarea>
                             @error('text')
                                 {{$message}}
                             @enderror
                         </div>
                         <hr>
+                        <span>＊趣味に関する写真</span>
                         <div class="item">
-                            <span>＊趣味に関する写真</span>
-                            <input class="inputs" type="file" name="hobby_img_path" value="{{ $post->municipalities }}">
-                            @error('hobby_img_path')
-                                {{$message}}
-                            @enderror
+                                @if (!empty($post['hobby_img_path']))
+                                    <img src="../../uploads/post/{{ $post['hobby_img_path'] }}">
+                                @else
+                                    <img src="../../uploads/post/no_image_logo.png">
+                                @endif
                         </div>
                         <div>
                             <button class="post__btn" type="submit">削除する</button>

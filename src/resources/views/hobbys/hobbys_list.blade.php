@@ -291,7 +291,7 @@
                                     <p>投稿日時 {{$hobby->created_at}}</p>
                                     <p>参加したいね</p>
                                     <!-- 自分がいいねしたもののみ表示する -->
-                                    <a href="{{route('contact')}}"><button class="contact__button">問い合わせ</button></a>
+                                    <a href="{{route('contact')}}?id={{ $hobby->user_id }}"><button class="contact__button">問い合わせ</button></a>
                                 </div>
                                 <div class="hobby__img">
                                     <div class="hobby_img_frame">

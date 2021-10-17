@@ -4,7 +4,14 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="/css/sidebar_css.css">
+@include('hobbys.sidebar_css')
 <style>
+/* これも無いとだめ */
+.content_wrapper {
+    transition: margin-left .3s ease-in-out;
+    margin-left: 250px;
+}
 /* これが絶対必要スクロールがついてこない */
 .test2 {
         position: fixed; 
@@ -127,8 +134,11 @@ textarea:focus {
 <title>趣味編集画面</title>
 </head>
 <body>
+    <div class="test2">
+        @include('hobbys.sidebar')
+    </div>
     <div class="content_wrapper">
-        <form action="{{route('hobby_update', ['id'=> $post->id])}}" method="post" enctype="multipart/form-data">
+        <form action="{{route('hobby_update', ['id'=> $post['id']])}}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="regist">
                 <div class="regist__content">
@@ -138,7 +148,7 @@ textarea:focus {
                     <div class="input__item">
                         <span>＊30文字以内</span>
                         <div class="item">
-                            <input class="inputs" type="text" name="title" value="{{ $post->title }}" placeholder="タイトルを入力下さい">
+                            <input class="inputs" type="text" name="title" value="{{ $post['title'] }}" placeholder="タイトルを入力下さい">
                             @error('title')
                                 {{$message}}
                             @enderror
@@ -146,7 +156,7 @@ textarea:focus {
                         <span>＊県名</span>
                         <div class="item" id="municipalities" value="">
                             {{$form['prefecture']}}
-                            <input type="text" name="municipalities" class="municipalities" value="{{ $post->municipalities }}" placeholder="市区町村を入力下さい">
+                            <input type="text" name="municipalities" class="municipalities" value="{{ $post['municipalities'] }}" placeholder="市区町村を入力下さい">
                         </div>
                         <span>＊趣味カテゴリー</span>
                         <div class="item">
@@ -154,7 +164,7 @@ textarea:focus {
                         </div>
                         <span>＊300文字以内</span>
                         <div class="item">
-                            <textarea class="inputs" name="text" id="" cols="30" rows="10" value="" textarea placeholder="詳細を記入下さい">{{ $post->text }}</textarea>
+                            <textarea class="inputs" name="text" id="" cols="30" rows="10" value="" textarea placeholder="詳細を記入下さい">{{ $post['text'] }}</textarea>
                             @error('text')
                                 {{$message}}
                             @enderror

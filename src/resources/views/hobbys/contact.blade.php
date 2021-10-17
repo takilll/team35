@@ -8,6 +8,67 @@
     <link rel="stylesheet" href="/css/sidebar_css.css">
     @include('hobbys.sidebar_css')
     <style>
+    h1 {
+        margin:0;
+        padding:0;
+        border:0;
+        outline:0;
+        font-size:100%;
+        vertical-align:baseline;
+        background:transparent;
+        margin-bottom: 30px;
+        font-size: 100%;
+        color: #222;
+        }
+        .content_wrapper {
+        transition: margin-left .3s ease-in-out;
+        margin-left: 275px;
+        }
+        input[type="text"],
+            textarea {
+                margin-bottom: 20px;
+                padding: 10px;
+                font-size: 86%;
+                border: 1px solid #ddd;
+                border-radius: 3px;
+                background: #fff;
+        }
+
+        input[type="text"] {
+            width: 200px;
+        }
+        textarea {
+            width: 50%;
+            max-width: 50%;
+            height: 70px;
+        }
+        input[type="submit"] {
+            appearance: none;
+            -webkit-appearance: none;
+            padding: 10px 20px;
+            color: #fff;
+            font-size: 86%;
+            line-height: 1.0em;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #37a1e5;
+        }
+        input[type=submit]:hover,
+        button:hover {
+            background-color: #1E48B1;
+        }
+        button {
+            -webkit-appearance: none;
+            padding: 10px 20px;
+            color: #fff;
+            font-size: 86%;
+            line-height: 1.0em;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #1E48B1;
+        }
     
     /* これも無いとだめ */
     .content_wrapper {
@@ -192,14 +253,18 @@
     </div>
     <div class="content_wrapper">
     <h1>趣味への問い合わせ</h1>
-    <form method="post" action="{{ route('confirm', ['id'=> $user->id]) }}" class="">
+    <form method="post" action="{{ route('confirm') }}?id={{ $to_user['id'] }}" class="">
         @csrf
         <p>件名</p>
+        
+        <input type="hidden" name="id" value="{{$to_user['id']}}">
+        <input type="hidden" name="nickname" value="{{$to_user['nickname']}}">
+        <input type="hidden" name="mail" value="{{$to_user['mail']}}">
         <input type="text" name="title" class="" minlength="10" maxlength="50" required>
         <p>ニックネーム：{{ $user->nickname }}</p>
         <p>メールアドレス：{{ $user->mail }}</p>
         <p>問い合わせ内容</p>
-        <textarea id="message" name="message" minlength="10" maxlength="300" required></textarea>
+        <textarea id="body" name="body" minlength="10" maxlength="300" required></textarea>
         <div class="contact_btn">
             <button class="inquiry" type="submit">問い合わせる</button>
         </div>
