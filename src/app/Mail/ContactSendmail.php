@@ -12,6 +12,7 @@ class ContactSendmail extends Mailable
     use Queueable, SerializesModels;
 
     public $nickname;
+    public $to_nickname;
     public $mail;
     public $title;
     public $message;
@@ -24,6 +25,7 @@ class ContactSendmail extends Mailable
     public function __construct($inputs)
     {
         $this->nickname = $inputs['nickname'];
+        $this->to_nickname = $inputs['to_nickname'];
         $this->mail = $inputs['mail'];
         $this->title  = $inputs['title'];
         $this->body = $inputs['body'];
@@ -41,6 +43,8 @@ class ContactSendmail extends Mailable
             ->subject('問い合わせがありました')
             ->view('contact.mail')
             ->with([
+                'nickname' => $this->nickname,
+                'to_nickname' => $this->to_nickname,
                 'mail' => $this->mail,
                 'title' => $this->title,
                 'body'  => $this->body,
