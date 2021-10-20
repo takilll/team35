@@ -289,7 +289,12 @@
                                     <p>{{$hobby->nickname}}</p>
                                     <p>場所 {{$def['prefecture'][$hobby->prefecture]?? __('')}}{{$hobby->municipalities}}</p>
                                     <p>投稿日時 {{$hobby->created_at}}</p>
-                                    <p>参加したいね</p>
+                                    {{-- todoいいね機能 --}}
+                                        {{-- いいねがある状態削除 --}}
+                                        <p><a href="{{route('post.unlike',$hobby->id)}}"><img src="../../img/icon-heart-twitterblue.svg" alt=""></a></p>
+                                        {{-- いいねが無い状態登録 --}}
+                                        <p><a href="{{route('post.like',$hobby->id)}}"><img src="../../img/icon-heart.svg"alt=""></a></p>
+                                    {{-- @endif --}}
                                     <!-- 自分がいいねしたもののみ表示する -->
                                     <a href="{{route('contact')}}?id={{ $hobby->user_id }}"><button class="contact__button">問い合わせ</button></a>
                                 </div>
@@ -314,3 +319,4 @@
     </div>
 </body>
 </html>
+
