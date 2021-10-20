@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>問い合わせ</title>
+    <title>問い合わせ確認画面</title>
     @include('hobbys.sidebar_css')
     <style>
         h1 {
@@ -74,16 +74,22 @@
 @include('hobbys.sidebar')
     <div class="content_wrapper">
     <h1>趣味への問い合わせ内容確認</h1>
-    <form method="post" action="{{ route('process', ['id'=> $contact->id]) }}" class="">
+    <form method="post" action="{{ route('complete') }}?id={{ $to_user['id'] }}" class="">
         @csrf
-        <p>件名：{{ $contact->title }}</p>
+        <input type="hidden" name="to_user_id" value="{{$to_user['id']}}">
+        <input type="hidden" name="to_nickname" value="{{$to_user['nickname']}}">
+        <input type="hidden" name="to_mail" value="{{$to_user['mail']}}">
+        <input type="hidden" name="user_id" value="{{$user->id}}">
+        <input type="hidden" name="nickname" value="{{ $user->nickname }}">
+        <input type="hidden" name="mail" value="{{$user->mail}}">
+        <input type="hidden" name="title" value="{{ $inputs['title'] }}">
+        <input type="hidden" name="body" value="{{ $inputs['body'] }}">
         <p>ニックネーム：{{ $user->nickname }}</p>
-        <p>メールアドレス：{{ $user->mail }}</p>
+        <p>件名：{{ $inputs['title'] }}</p> <!-- {{ $contact['title'] }} -->
+        <p>メールアドレス：{{ $user->mail }}</p> 
         <p>問い合わせ内容</p>
-        {{ $contact->message }}
-    </form>
-    <form action="">
-        <button class="inquiry" type="submit">問い合わせる</button>
+        {{ $inputs['body'] }} <!-- {{ $user->message }} -->
+        <button class="inquiry" name="action" type="submit" value="submit">問い合わせる</button>
     </form>
     </div>
 </body>

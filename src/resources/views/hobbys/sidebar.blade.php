@@ -24,11 +24,11 @@
                     <p>趣味新規登録</p>
                   </a>
                   <a href="{{route('user_mypage')}}" class="nav-link active">
-                  {{-- <a href="{{ route('user_mypage', ['id'=> $user->id]) }}" class="nav-link active"> --}}
+                  <!-- {{-- <a href="{{ route('user_mypage', ['id'=> $user->id]) }}" class="nav-link active"> --}} -->
                     <p>My投稿一覧画面</p>
                   </a>
-                  <a href="{{route('user_edit',$user->id)}}" class="nav-link active" name="user_edit">
-                  {{-- <a href="{{ route('user_edit', ['id'=> $user->id]) }}" class="nav-link active" name="user_edit"> --}}
+                  <a href="{{route('user_edit')}}" class="nav-link active" name="user_edit">
+                  <!-- {{-- <a href="{{ route('user_edit', ['id'=> $user->id]) }}" class="nav-link active" name="user_edit"> --}} -->
                     <p>ユーザー変更画面</p>
                   </a>
                 </li>

@@ -72,9 +72,10 @@
 </head>
 <body>
 @include('hobbys.sidebar')
+    @csrf
     <div class="content_wrapper">
     <h1>趣味への問い合わせ完了</h1>
-    <a href="{{ route('index') }}" class="btn btn-primary">趣味一覧画面に戻る</a>
+    <a href="{{ route('hobby.list') }}" class="btn btn-primary">趣味一覧画面に戻る</a>
     </div>
 </body>
 </html>
