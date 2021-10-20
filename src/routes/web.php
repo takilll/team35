@@ -25,6 +25,12 @@ Route::any('/index', [App\Http\Controllers\HobbyController::class, 'list'])->nam
 
 // 趣味新規投稿一覧ページ
 Route::any('/regist', [HobbyController::class, 'regist'])->name('hobby.regist');
+
+// いいね登録
+Route::get('/hobby/like/{id}',   [HobbyController::class, 'like'])->name('post.like');
+// いいね削除
+Route::get('/hobby/unlike/{id}', [HobbyController::class, 'unlike'])->name('post.unlike');
+
 // 趣味登録処理
 Route::post('/regist',      [HobbyController::class, 'store'])->name('hobby.proc');
 
