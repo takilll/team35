@@ -224,6 +224,9 @@
         transition: .0s;
         border-bottom: none;
     }
+    .heart{
+        width: 15%
+    }
 </style>
 
 <title>My投稿一覧</title>
@@ -289,14 +292,14 @@
                                     <p>{{$hobby->nickname}}</p>
                                     <p>場所 {{$def['prefecture'][$hobby->prefecture]?? __('')}}{{$hobby->municipalities}}</p>
                                     <p>投稿日時 {{$hobby->created_at}}</p>
-                                    {{-- todoいいね機能 --}}
-                                        {{-- いいねがある状態削除 --}}
-                                        <p><a href="{{route('post.unlike',$hobby->id)}}"><img src="../../img/icon-heart-twitterblue.svg" alt=""></a></p>
+                                    {{-- いいねがある状態削除 --}}
+                                    @if (!empty($hobby->like_user_id))
+                                        <p><a href="{{route('post.unlike',$hobby->id)}}"><img src="../../img/icon-heart-twitterblue.svg" alt="" class="heart"></a>{{$hobby->likes_count}}</p>                                                
+                                        <a href="{{route('contact')}}?id={{ $hobby->user_id }}"><button class="contact__button">問い合わせ</button></a>
+                                    @else
                                         {{-- いいねが無い状態登録 --}}
-                                        <p><a href="{{route('post.like',$hobby->id)}}"><img src="../../img/icon-heart.svg"alt=""></a></p>
-                                    {{-- @endif --}}
-                                    <!-- 自分がいいねしたもののみ表示する -->
-                                    <a href="{{route('contact')}}?id={{ $hobby->user_id }}"><button class="contact__button">問い合わせ</button></a>
+                                        <p><a href="{{route('post.like',$hobby->id)}}"><img src="../../img/icon-heart.svg"alt="" class="heart"></a>{{$hobby->likes_count}}</p>
+                                    @endif
                                 </div>
                                 <div class="hobby__img">
                                     <div class="hobby_img_frame">

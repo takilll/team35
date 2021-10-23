@@ -76,24 +76,20 @@ class HobbyController extends Controller
             // left join の on句
             $join->whereRaw('user_id = u_id ');
         });
-        //likesテーブルのサブクエリ likesテーブルのid名が被るから idをl_idにリネーム
-        // $l = DB::table('likes')->select( DB::raw( 'id as l_id'), 'user_id as l_user_id','post_id');
-        // //leftjoinで$dbに$uを結合
-        // $db->leftjoin( DB::raw( '( '.$l->toSql().' ) as likes'), function($join){
-        //     // left join の on句
-        //     $join->whereRaw( 'id = post_id ' );
-        //         });
         //検索条件を保管
         $data = Session::get('hobby.search.input');
 
-
-        $l = DB::table('likes')->select('user_id as l_user_id', 'post_id');
+        $l = DB::table('likes')->select('user_id as like_user_id', 'post_id');
         //leftjoinで$dbに$uを結合
         $db->leftjoin(DB::raw('( ' . $l->toSql() . ' ) as likes'), function ($join) {
             // left join の on句
             $user = Session::get('user');
-            $join->whereRaw('id = post_id AND l_user_id = ' . $user[0]->id);
+            //ログインユーザーがいいねをしているかを判定
+            $join->whereRaw('id = post_id AND like_user_id = ' . $user[0]->id);
         });
+        // いいね数判定
+        $like_count = DB::table('likes')->select('post_id as post_id_count', DB::raw('count(post_id) as likes_count'))->groupBy('post_id');
+        $db->leftjoin(DB::raw('( ' . $like_count->toSql() . ' ) as likes_count'), 'posts.id', '=', 'likes_count.post_id_count');
 
         //データを取得
         $hobbys = $db->get();
