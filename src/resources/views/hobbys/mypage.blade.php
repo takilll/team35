@@ -296,6 +296,9 @@
     .test2 {
         position: fixed; 
     }
+    .heart{
+        width: 15%
+    }
 </style>
     <title>My投稿一覧</title>
 </head>
@@ -324,7 +327,7 @@
                                     <p>{{$hobby->nickname}}</p>
                                     <p>場所 {{$def['prefecture'][$hobby->prefecture]?? __('')}}{{$hobby->municipalities}}</p>
                                     <p>投稿日時 {{$hobby->created_at}}</p>
-                                    <p>参加したいね</p>
+                                    <p>参加したいね数：{{$hobby->likes_count}}</p>
                                     <div class="edit_button">
                                         <p><a href="{{ route('hobby_edit') }}?id={{ $hobby->id }}" class="" name="hobby_edit"><button class="edit">編集する</button></a>
                                         <p><a href="{{ route('hobby_delete') }}?id={{ $hobby->id }}" class="" name="hobby_delete"><button class="delete">削除する</button></a>

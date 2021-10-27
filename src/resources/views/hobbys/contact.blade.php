@@ -21,8 +21,9 @@
         color: #222;
         }
         .content_wrapper {
-        transition: margin-left .3s ease-in-out;
-        margin-left: 275px;
+            transition: margin-left .3s ease-in-out;
+            padding: 40px;
+            margin-left: 275px;
         }
         input[type="text"],
             textarea {
@@ -35,12 +36,21 @@
         }
 
         input[type="text"] {
-            width: 200px;
+            border: solid 1px #aaa;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 16px;
         }
         textarea {
-            width: 50%;
-            max-width: 50%;
-            height: 70px;
+            border: solid 1px #aaa;
+            border-radius: 5px;
+            padding: 10px;
+            height: 160px;
+            font-size: 16px;
+        }
+        textarea:focus {
+            border: 1px solid #fcbe14;
+            outline: 0;
         }
         input[type="submit"] {
             appearance: none;
@@ -156,94 +166,22 @@
         width: 100%;
     }
 
-
-    /* 検索エリア */
-    .search__area{
-        max-width: 1000px;
-    }
-
-    input{
-        width: 300px;
-    }
-
-    select{
-        width: 200px;
-        margin: 10px;
-    }
-
     input[type="text"]{
         border: solid 1px #aaa;
         border-radius:5px;
         padding:10px;
         font-size: 16px;
-        margin: 10px;
     }
 
     input[type="text"]:focus {
         border: 1px solid #fcbe14;
         outline: 0;
     }
-
-
-    select{
-        border: solid 1px #aaa;
-        border-radius:5px;
-        padding:10px;
-        font-size: 16px;
+    .inputs{
+        width: 800px;
     }
-
-    select:focus {
-        border: 1px solid #fcbe14;
-        outline: 0;
-    }
-
-    .search__btn{
-        display: inline;
-        margin: 8px;
-    }
-
-    .btn__search {
-        display: inline-block;
-        font-size: 16px;
-        width: 40%;
-        padding: 10px;
-        text-align: center;
-        text-decoration: none;
-        color: #fff;
-        background:#fcbe14;
-        border-bottom:4px solid #1E48B1;
-        border-radius: 10px;
-        transition: .0s;
-    }
-    .btn__search:hover {
-        cursor: pointer;
-        text-decoration: none;
-        background:#1E48B1;
-        transform: translate3d(0, 4px, 0);
-        transition: .0s;
-        border-bottom: none;
-    }
-
-    .btn__clear {
-        display: inline-block;
-        font-size: 16px;
-        width: 40%;
-        padding: 10px;
-        text-align: center;
-        text-decoration: none;
-        color: #fff;
-        background:#fcbe14;
-        border-bottom:4px solid #1E48B1;
-        border-radius: 10px;
-        transition: .0s;
-    }
-    .btn__clear:hover {
-        cursor: pointer;
-        text-decoration: none;
-        background:#1E48B1;
-        transform: translate3d(0, 4px, 0);
-        transition: .0s;
-        border-bottom: none;
+    span {
+        color: red;
     }
 </style>
 </head>
@@ -255,16 +193,19 @@
     <h1>趣味への問い合わせ</h1>
     <form method="post" action="{{ route('confirm') }}?id={{ $to_user['id'] }}" class="">
         @csrf
-        <p>件名</p>
-        
-        <input type="hidden" name="id" value="{{$to_user['id']}}">
-        <input type="hidden" name="nickname" value="{{$to_user['nickname']}}">
-        <input type="hidden" name="mail" value="{{$to_user['mail']}}">
-        <input type="text" name="title" class="" minlength="10" maxlength="50" required>
+        <span>＊50文字以内</span>
+        <div class="item">
+            <input type="hidden" name="id" value="{{$to_user['id']}}">
+            <input type="hidden" name="nickname" value="{{$to_user['nickname']}}">
+            <input type="hidden" name="mail" value="{{$to_user['mail']}}">
+            <input type="text" name="title" class="" minlength="10" maxlength="50" placeholder="タイトルを入力下さい" required>
+        </div>    
         <p>ニックネーム：{{ $user->nickname }}</p>
         <p>メールアドレス：{{ $user->mail }}</p>
-        <p>問い合わせ内容</p>
-        <textarea id="body" name="body" minlength="10" maxlength="300" required></textarea>
+        <span>＊300文字以内</span>
+        <div class="content">
+            <textarea class="inputs" id="body" name="body" minlength="10" maxlength="300" placeholder="問い合わせ内容を入力下さい" required></textarea>
+        </div> 
         <div class="contact_btn">
             <button class="inquiry" type="submit">問い合わせる</button>
         </div>

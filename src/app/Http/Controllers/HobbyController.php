@@ -470,16 +470,15 @@ class HobbyController extends Controller
         $user = Session::get('user');
         $user = User::find($user[0]->id);
         $query = <<<SQL
-            SELECT
-                users.nickname AS nickname,
-                users.profile_img_path AS profile_img_path,
-                posts.*
-            FROM
-                posts
-                LEFT JOIN
-                users ON users.id = posts.user_id
-            WHERE
-                posts.user_id = $user->id
+            select * from (
+                select
+                    posts.*,
+                    count(posts.id) as likes_count
+                from posts,likes
+                where posts.id=likes.post_id
+                group by posts.id
+                ) as posts left join users ON users.id = posts.user_id
+            WHERE posts.user_id =  $user->id;
         SQL;
 
         $def['prefecture']  = __('define.prefecture');

@@ -89,7 +89,9 @@
         <p>メールアドレス：{{ $user->mail }}</p> 
         <p>問い合わせ内容</p>
         {{ $inputs['body'] }} <!-- {{ $user->message }} -->
-        <button class="inquiry" name="action" type="submit" value="submit">問い合わせる</button>
+        <div class="contact_btn">
+            <button class="inquiry" name="action" type="submit" value="submit">問い合わせる</button>
+        </div>
     </form>
     </div>
 </body>
