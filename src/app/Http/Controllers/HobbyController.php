@@ -280,7 +280,7 @@ class HobbyController extends Controller
             $target_path = public_path('uploads/profile/');
             $file->move($target_path, $user->profile_img_path);
         } else {
-            $user->profile_img_path = "profile_img_path";
+            $user->profile_img_path = "";
         }
         $user->save();
         return redirect('index');
