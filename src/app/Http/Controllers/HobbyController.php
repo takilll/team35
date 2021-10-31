@@ -146,10 +146,13 @@ class HobbyController extends Controller
                 'text'                  => 'required|max:300',
                 'hobby_img_path'        => 'image',
                 'prefecture'            => 'required',
-                'municipalities'        => 'max:10'
+                'municipalities'        => 'max:10',
             ],
             [
                 'required'              => '必須入力です。',
+                'title.max'             => 'タイトルは30文字以内で入力して下さい。',
+                'text.max'              => '投稿内容は300文字以内で入力して下さい。',
+                'municipalities.max'    => '市区町村は10文字以内で入力して下さい。',
                 'image'                 => '画像はjpg、png、bmp、gif、svg、webpのファイルを選択して下さい。'
             ]
         );
@@ -163,16 +166,9 @@ class HobbyController extends Controller
         } else {
             $fileName = "";
         }
-
-        // ログインしているuser_idの取得
-        // $user = auth::user()->id;
         $user = Session::get('user');
-        // var_dump($user);
-        // die;
-
 
         $post = new Post;
-        // ログインしているuser_idを何処で拾うか
         $post->user_id        = $user[0]->id;
         $post->category       = $request->category;
         $post->title          = $request->title;
@@ -181,8 +177,6 @@ class HobbyController extends Controller
         $post->prefecture     = $request->prefecture;
         $post->municipalities = $request->municipalities;
         $post->save();
-
-        // $message = "新規登録が完了しました。";
         return redirect()->route('hobby.list');
     }
 

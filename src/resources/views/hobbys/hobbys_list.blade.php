@@ -227,6 +227,28 @@
     .heart{
         width: 15%
     }
+
+    .contact__button{
+        display: inline-block;
+        font-size: 16px;
+        padding: 10px;
+        text-align: center;
+        text-decoration: none;
+        color: #fff;
+        background:#fcbe14;
+        border-bottom:4px solid #1E48B1;
+        border-radius: 10px;
+        transition: .0s;
+    }
+
+    .contact__button:hover{
+        cursor: pointer;
+        text-decoration: none;
+        background:#1E48B1;
+        transform: translate3d(0, 4px, 0);
+        transition: .0s;
+        border-bottom: none;
+    }
 </style>
 
 <title>My投稿一覧</title>
@@ -235,7 +257,6 @@
     <div class="test2">
         @include('hobbys.sidebar')
     </div>
-
     <div class="content_wrapper">
         <div class="btn_new">
             <a href="{{route('hobby.regist')}}"><button class="btn_clear">新規登録</button></a>

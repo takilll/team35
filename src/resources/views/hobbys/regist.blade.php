@@ -149,7 +149,11 @@ textarea:focus {
             <div class="regist">
                 <div class="regist__content">
                     <div class="user">
-                        <img src="https://picsum.photos/100" alt="">
+                    @if (!empty($user->profile_img_path))
+                        <img src="../../uploads/profile/{{ $user->profile_img_path}}">
+                    @else
+                        <img src="../../uploads/profile/icon-profile.svg">
+                    @endif
                     </div>
                     <div class="input__item">
                         <span>＊30文字以内</span>
@@ -163,6 +167,9 @@ textarea:focus {
                         <div class="item" id="municipalities">
                             {{$form['prefecture']}}
                             <input type="text" name="municipalities" class="municipalities" placeholder="市区町村を入力下さい">
+                            @error('municipalities')
+                                {{$message}}
+                            @enderror
                         </div>
                         <span>＊趣味カテゴリー</span>
                         <div class="item">
