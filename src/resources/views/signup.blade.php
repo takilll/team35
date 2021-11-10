@@ -95,10 +95,10 @@
             @csrf
             <img src="logo4_2.png" alt="" class="logo-white">
             <h1>アカウントの作成</h1>
-            <input type="text" class="form-control name_mail" name="nickname" placeholder="ニックネーム" maxlength="50" required autofocus>
-            <input type="email" class="form-control name_mail" name="mail" placeholder="メールアドレス" maxlength="50" required>
+            <input type="text" class="form-control name_mail" name="nickname" value="" placeholder="ニックネーム" maxlength="50" required autofocus>
+            <input type="email" class="form-control name_mail" name="mail" value="" placeholder="メールアドレス" maxlength="50" required>
             <div class="birth-area">    
-                <select name="birth_year" class="birth">
+                <select name="birth_year" class="birth" required>
                 <option value="">年</option>
                 <option value="1900">1900</option>
                 <option value="1901">1901</option>
@@ -227,7 +227,7 @@
                 <option value="2024">2024</option>
                 <option value="2025">2025</option>
                 </select>
-                <select name="birth_month" class="birth">
+                <select name="birth_month" class="birth" required>
                 <option value="">月</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -242,7 +242,7 @@
                 <option value="11">11</option>
                 <option value="12">12</option>
                 </select>
-                <select name="birth_day" class="birth">
+                <select name="birth_day" class="birth" required>
                 <option value="">日</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -278,7 +278,7 @@
                 </select>
             <br><p class="text mt-1 mb-3 text-muted">※ 生年月日は登録後の変更ができません。</p>
             </div>
-            <input type="password" class="form-control" name="password" placeholder="パスワード" minlength="8" maxlength="16" required>
+            <input type="password" class="form-control" name="password" value="" placeholder="パスワード" minlength="8" maxlength="16" required>
             <p class="text mt-1 mb-3 text-muted">※ パスワードは8-16英数字(a-z,A-Z,0-9)で設定してください。</p>
             <!--- <div class="mb-0 select"> --->
                 <input type="file" name="profile_img_path" class="form-control form-control-sm">
