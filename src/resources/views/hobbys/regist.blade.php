@@ -74,6 +74,15 @@ select:focus {
     width: 70%;
 }
 
+.optional{
+    color:#aaa;
+}
+
+.municipalities_optional{
+    margin-left: 140px;
+    color:#aaa
+}
+
 textarea{
     border: solid 1px #aaa;
     border-radius:5px;
@@ -164,8 +173,10 @@ textarea:focus {
                             @enderror
                         </div>
                         <span>＊県名</span>
+                        <span class="municipalities_optional">任意</span>
                         <div class="item" id="municipalities">
                             {{$form['prefecture']}}
+                            
                             <input type="text" name="municipalities" class="municipalities" placeholder="市区町村を入力下さい">
                             @error('municipalities')
                                 {{$message}}
@@ -183,7 +194,7 @@ textarea:focus {
                             @enderror
                         </div>
                         <div class="item">
-                            <span>＊趣味に関する写真</span>
+                            <span class="optional">任意</span>
                             <input class="inputs" type="file" name="hobby_img_path">
                             @error('hobby_img_path')
                                 {{$message}}
