@@ -101,13 +101,20 @@ textarea:focus {
     width: 100%;
 }
 
-/* .item__area{
-    display: flex;
-    justify-content: space-between;
-    display: table-cell;
-    vertical-align: middle;
-} */
-
+.hobby__img .hobby_img_frame img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.hobby_img_frame{
+        /* width: 100%;
+        height: 50vw; */
+        width: 400px;
+        height: 250px;
+        box-shadow: 5px 10px 20px rgba(0,0,0,0.25);
+        border-radius: 15px;
+        margin: 10px;
+    }
 .post__btn {
 	display: inline-block;
     font-size: 16px;
@@ -174,12 +181,14 @@ textarea:focus {
                         </div>
                         <hr>
                         <span>＊趣味に関する写真</span>
-                        <div class="item">
-                                @if (!empty($post['hobby_img_path']))
-                                    <img src="../../uploads/post/{{ $post['hobby_img_path'] }}">
-                                @else
-                                    <img src="../../uploads/post/no_image_logo.png">
-                                @endif
+                        <div class="hobby__img">
+                            <div class="hobby_img_frame">
+                                    @if (!empty($post['hobby_img_path']))
+                                        <img src="../../uploads/post/{{ $post['hobby_img_path'] }}">
+                                    @else
+                                        <img src="../../uploads/post/no_image_logo.png">
+                                    @endif
+                            </div>
                         </div>
                         <div>
                             <button class="post__btn" type="submit">削除する</button>
