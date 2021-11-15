@@ -72,6 +72,8 @@ $ php artisan migrate
 　　[参照記事をご確認下さい](https://qiita.com/hiro5963/items/df062ab19e8ceba4573f)
 
 # Author
+Yoshihiro.Harada
+Haruna.Takigawa
 Keiichiro.Kimoto
 
 # License
