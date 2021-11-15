@@ -73,7 +73,9 @@ $ php artisan migrate
 
 # Author
 Yoshihiro.Harada
+
 Haruna.Takigawa
+
 Keiichiro.Kimoto
 
 # License
