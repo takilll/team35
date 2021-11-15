@@ -38,7 +38,7 @@ hobbysは趣味を共有したい人同士をマッチングするアプリケ�
 1. リポジトリからクローンします。
 
 ```bash
-$  git clone [LaravelプロジェクトのURL]
+$  git clone https://github.com/takilll/team35.git
 ```
 2. composerをインストールします。
 
