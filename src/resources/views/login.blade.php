@@ -45,15 +45,13 @@
     
     .signup input {
         margin-bottom: 10px;
-        background-color: #fcbe14;
+        background-color: #fff;
         border-color: #1E48B1;
-        color: #fff;
     }
     
     .signup input:focus {
-        background-color: #fcbe14;
+        background-color: #fff;
         border-color: #1af;
-        color: #fff;
     }
 
     .text {
@@ -85,15 +83,27 @@
 </head>
 <body class="signup text-center">
     <main class="form-signup">
-        <form action="sign-up.php" method="post">
+        <form action="{{ url('login/post')}}" method="POST">
+            @csrf
             <img src="logo4_2.png" alt="" class="logo-white">
             <h1>ログインする</h1>
-            <input type="email" class="form-control" name="email" placeholder="メールアドレス" maxlength="50" required autofocus>
+            @isset($errorMsg)
+            {{ $errorMsg }}
+            <br>
+            <br>
+            @endisset
+            <input type="email" class="form-control" name="mail" placeholder="メールアドレス" maxlength="50" required autofocus>
             <input type="password" class="form-control" name="password" placeholder="パスワード" minlength="8" maxlength="16" required>
             <button class="w-100 btn btn-lg" type="submit">ログイン</button>
-            <p class="mt-3 mb-2"><a href="sign-in.php">会員登録する</a></p>
+            <p class="mt-3 mb-2"><a href="../signup">会員登録する</a></p>
             <p class="mt-2 mb-3 text-muted">&copy; 2021</p>
         </form>
     </main>
 </body>
+<script>
+    history.pushState(null, null, location.href);
+    window.addEventListener('popstate', (e) => {
+        history.go(1);
+    });
+</script>
 </html>

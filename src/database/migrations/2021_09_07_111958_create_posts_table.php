@@ -21,7 +21,7 @@ class CreatePostsTable extends Migration
             $table->string('text', 300);
             $table->string('hobby_img_path', 254)->nullable();
             $table->integer('prefecture');
-            $table->string('municipalities',10);
+            $table->string('municipalities',10)->nullable();
             $table->timestamps();
         });
     }

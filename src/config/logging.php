@@ -35,6 +35,15 @@ return [
     */
 
     'channels' => [
+        
+        'debug' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/debug_laravel.log'),
+            'level' => 'debug',
+            'days' => 14,
+            'permission' => 0777,
+        ],
+
         'stack' => [
             'driver' => 'stack',
             'channels' => ['single'],

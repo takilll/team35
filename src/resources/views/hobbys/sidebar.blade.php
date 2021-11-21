@@ -8,7 +8,7 @@
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
               <div class="image">
-                <img src="\team35\src\resources\views\img\hobbys2.png" class="img-circle elevation-2" alt="User Image">
+                <img src="/img/hobbys2.png" class="img-circle elevation-2" alt="User Image">
               </div>
             </div>
             <!-- Sidebar Menu -->
@@ -17,16 +17,18 @@
                 <!-- Add icons to the links using the .nav-icon class
                     with font-awesome or any other icon font library -->
                 <li class="nav-item menu-open">
-                  <a href="#" class="nav-link active">
+                  <a href="{{route('hobby.list')}}" class="nav-link active">
                     <p>ホーム</p>
                   </a>
-                  <a href="#" class="nav-link active">
+                  <a href="{{route('hobby.regist')}}" class="nav-link active">
                     <p>趣味新規登録</p>
                   </a>
-                  <a href="mypage.php" class="nav-link active">
+                  <a href="{{route('user_mypage')}}" class="nav-link active">
+                  <!-- {{-- <a href="{{ route('user_mypage', ['id'=> $user->id]) }}" class="nav-link active"> --}} -->
                     <p>My投稿一覧画面</p>
                   </a>
-                  <a href="change_profile.php" class="nav-link active">
+                  <a href="{{route('user_edit')}}" class="nav-link active" name="user_edit">
+                  <!-- {{-- <a href="{{ route('user_edit', ['id'=> $user->id]) }}" class="nav-link active" name="user_edit"> --}} -->
                     <p>ユーザー変更画面</p>
                   </a>
                 </li>
@@ -45,7 +47,7 @@
           <!-- Add icons to the links using the .nav-icon class
             with font-awesome or any other icon font library -->
           <li class="nav-item menu-open">
-            <a href="#" class="nav-link active logout">
+            <a href="{{url('logout')}}" class="nav-link active logout">
               <p>ログアウト</p>
             </a>
           </li>
