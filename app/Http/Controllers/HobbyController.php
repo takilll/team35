@@ -9,9 +9,9 @@ use App\Mail\ContactSendmail;
 use Illuminate\Http\Request;
 // use App\Mail\ContactSendmail;
 
-use App\Models\Hobby;
+use App\Models\hobby;
 use App\Models\Post;
-use App\Models\Like;
+use App\Models\like;
 use DB;
 use Session;
 use Form;
@@ -287,7 +287,7 @@ class HobbyController extends Controller
     }
     public function post(Request $req)
     {
-        $table = new hobby;
+        $table = new hobby();
         $user = $table->getUser($req->mail);
         if (Hash::check($req->password, $user[0]->password)) {
             // kimoto修正
@@ -315,7 +315,7 @@ class HobbyController extends Controller
     public function postRegister(Request $request)
     {
         // ユーザ登録処理
-        $user = new hobby;
+        $user = new hobby();
         $user->nickname = $request->nickname;
         $user->mail = $request->mail;
         $user->birth_year = $request->birth_year;
