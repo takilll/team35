@@ -157,23 +157,26 @@ class HobbyController extends Controller
             ]
         );
 
-        if ($file = $request->hobby_img_path) {
-            // getClientOriginalName()  拡張子を含め、アップロードしたファイルのファイル名を取得することができる。
-            $fileName = time() . $file->getClientOriginalName();
-            //public_path() publicディレクトリの完全パスを返す。publicディレクトリ内にuploadsディレクトリを作成。
-            $target_path = public_path('uploads/post/');
-            $file->move($target_path, $fileName);
-        } else {
-            $fileName = "";
-        }
+        // if ($file = $request->hobby_img_path) {
+        //     // getClientOriginalName()  拡張子を含め、アップロードしたファイルのファイル名を取得することができる。
+        //     $fileName = time() . $file->getClientOriginalName();
+        //     //public_path() publicディレクトリの完全パスを返す。publicディレクトリ内にuploadsディレクトリを作成。
+        //     $target_path = public_path('uploads/post/');
+        //     $file->move($target_path, $fileName);
+        // } else {
+        //     $fileName = "";
+        // }
+        
         $user = Session::get('user');
+        // 保存先をstorage配下へ変更
+        $filepath = $request->hobby_img_path->storeAs('public/posts', $user[0]->id. '_' .date("YmdHis"). '.jpg');
 
         $post = new Post;
         $post->user_id        = $user[0]->id;
         $post->category       = $request->category;
         $post->title          = $request->title;
         $post->text           = $request->text;
-        $post->hobby_img_path = $fileName;
+        $post->hobby_img_path = '/storage/posts/' . basename($filepath);
         $post->prefecture     = $request->prefecture;
         $post->municipalities = $request->municipalities;
         $post->save();
@@ -349,15 +352,15 @@ class HobbyController extends Controller
         }
         $user = Session::get('user');
         // dd($user);
-        $user = User::where( 'id', $user[0]->id )->first();
+        $user = User::where('id', $user[0]->id)->first();
         // $_GET['id'];
         $post =  Session::get('user_id');
         $to_user =  Session::get('user');
         $to_user = User::where('id', $_GET['id'])->get()->toArray();
         $view = view('hobbys.contact');
-        $view->with( 'user', $user);
-        $view->with( 'to_user', $to_user[0]);
-        $view->with( 'post', $post);
+        $view->with('user', $user);
+        $view->with('to_user', $to_user[0]);
+        $view->with('post', $post);
         return $view;
     }
 
@@ -383,11 +386,12 @@ class HobbyController extends Controller
         $to_user = User::where('id', $_GET['id'])->get()->toArray();
         $user = Session::get('user');
         // Log::debug("get user data from db");
-        $user = User::where( 'id', $user[0]->id )->first();
+        $user = User::where('id', $user[0]->id)->first();
         $view = view('hobbys.confirm', ['inputs' => $inputs]);
-        $view->with( 'user', $user);
-        $view->with( 'to_user', $to_user[0]);
-        $view->with( 'contact', ['title' => $request['title'],
+        $view->with('user', $user);
+        $view->with('to_user', $to_user[0]);
+        $view->with('contact', [
+            'title' => $request['title'],
             'id' => $request['id'],
             'nickname' => $request['nickname'],
             'mail' => $request['mail'],
@@ -422,12 +426,11 @@ class HobbyController extends Controller
         $inputs = $request->except('action');
 
         //actionの値で分岐
-        if($action !== 'submit'){
+        if ($action !== 'submit') {
 
             return redirect()
                 ->route('hobby.list')
                 ->withInput($inputs);
-
         } else {
 
             // DBにデータを保存
@@ -442,7 +445,7 @@ class HobbyController extends Controller
             $contact->to_mail        = $request->to_mail;
             $contact->title          = $request->title;
             $contact->body           = $request->body;
-        
+
             $contact->save();
             //入力されたメールアドレスにメールを送信
             \Mail::to($inputs['to_mail'])->send(new ContactSendmail($inputs));
@@ -505,13 +508,13 @@ class HobbyController extends Controller
         $nullitem = ['' => '選択して下さい'];
         //フォームの構築
         $form = [
-            'category'   => Form::select('category', $nullitem + __('define.category'), $post[0]['category'],["class"=>"", "id"=>"category"] ),
-            'prefecture' => Form::select('prefecture', $nullitem + __('define.prefecture'), $post[0]['prefecture'],["class"=>"", "id"=>"prefecture"]  ),
+            'category'   => Form::select('category', $nullitem + __('define.category'), $post[0]['category'], ["class" => "", "id" => "category"]),
+            'prefecture' => Form::select('prefecture', $nullitem + __('define.prefecture'), $post[0]['prefecture'], ["class" => "", "id" => "prefecture"]),
         ];
-        $view->with( 'user',    $user);
-        $view->with( 'post',  $post[0]);
+        $view->with('user',    $user);
+        $view->with('post',  $post[0]);
         // dd($post[0]);
-        $view->with( 'form', $form);
+        $view->with('form', $form);
         return $view;
     }
 
@@ -558,7 +561,7 @@ class HobbyController extends Controller
         $post->hobby_img_path = $fileName;
         $post->prefecture     = $request->prefecture;
         $post->municipalities = $request->municipalities;
-        $post-> save();
+        $post->save();
 
         return redirect('mypage');
     }
@@ -572,12 +575,12 @@ class HobbyController extends Controller
         $nullitem = ['' => '選択して下さい'];
         //フォームの構築
         $form = [
-            'category'   => Form::select('category', $nullitem + __('define.category'), $post[0]['category'],["class"=>"", "id"=>"category", 'disabled'=>'disabled'] ),
-            'prefecture' => Form::select('prefecture', $nullitem + __('define.prefecture'), $post[0]['prefecture'],["class"=>"", "id"=>"prefecture", 'disabled'=>'disabled'] ),
+            'category'   => Form::select('category', $nullitem + __('define.category'), $post[0]['category'], ["class" => "", "id" => "category", 'disabled' => 'disabled']),
+            'prefecture' => Form::select('prefecture', $nullitem + __('define.prefecture'), $post[0]['prefecture'], ["class" => "", "id" => "prefecture", 'disabled' => 'disabled']),
         ];
         $view = view('hobbys.hobby_delete');
-        $view->with( 'post',  $post[0]);
-        $view->with( 'form', $form);
+        $view->with('post',  $post[0]);
+        $view->with('form', $form);
         return $view;
         // return view('hobbys.hobby_delete', ['post' => $post]);
     }

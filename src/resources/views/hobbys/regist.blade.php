@@ -196,6 +196,7 @@ textarea:focus {
                         <div class="item">
                             <span class="optional">任意</span>
                             <input class="inputs" type="file" name="hobby_img_path">
+                            {{-- <input class="inputs" type="file" name="hobby_img_path"> --}}
                             @error('hobby_img_path')
                                 {{$message}}
                             @enderror
