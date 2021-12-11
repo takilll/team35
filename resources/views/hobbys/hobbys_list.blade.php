@@ -325,7 +325,7 @@
                                 <div class="hobby__img">
                                     <div class="hobby_img_frame">
                                         @if (!empty($hobby->hobby_img_path))
-                                            <img src="../../uploads/post/{{ $hobby->hobby_img_path }}">
+                                            <img src="{{ $hobby->hobby_img_path }}">
                                         @else
                                             <img src="../../uploads/post/no_image_logo.png">
                                         @endif

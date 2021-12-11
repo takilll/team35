@@ -157,23 +157,26 @@ class HobbyController extends Controller
             ]
         );
 
-        if ($file = $request->hobby_img_path) {
-            // getClientOriginalName()  拡張子を含め、アップロードしたファイルのファイル名を取得することができる。
-            $fileName = time() . $file->getClientOriginalName();
-            //public_path() publicディレクトリの完全パスを返す。publicディレクトリ内にuploadsディレクトリを作成。
-            $target_path = public_path('uploads/post/');
-            $file->move($target_path, $fileName);
-        } else {
-            $fileName = "";
-        }
+        // if ($file = $request->hobby_img_path) {
+        //     // getClientOriginalName()  拡張子を含め、アップロードしたファイルのファイル名を取得することができる。
+        //     $fileName = time() . $file->getClientOriginalName();
+        //     //public_path() publicディレクトリの完全パスを返す。publicディレクトリ内にuploadsディレクトリを作成。
+        //     $target_path = public_path('uploads/post/');
+        //     $file->move($target_path, $fileName);
+        // } else {
+        //     $fileName = "";
+        // }
         $user = Session::get('user');
+
+        // 保存先をstorage配下へ変更
+        $filepath = $request->hobby_img_path->storeAs('public/posts', $user[0]->id. '_' .date("YmdHis"). '.jpg');
 
         $post = new Post;
         $post->user_id        = $user[0]->id;
         $post->category       = $request->category;
         $post->title          = $request->title;
         $post->text           = $request->text;
-        $post->hobby_img_path = $fileName;
+        $post->hobby_img_path = '/storage/posts/' . basename($filepath);
         $post->prefecture     = $request->prefecture;
         $post->municipalities = $request->municipalities;
         $post->save();
